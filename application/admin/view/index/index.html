@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<!--  /index.html -->
+<head>
+
+    
+    {include file="base" /}
+    
+    <script src="__SYSTEM__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="__SYSTEM__/js/hplus.min.js"></script>
+    <style>
+        .navbar-header{width:auto;}
+        .navbar-static-top{background-color:#293846;}
+        .navbar-static-top li a{color:#a7b1c2;padding: 0px 10px;padding-top:15px;}
+        .navbar-static-top li {    padding: 0px 5px;}
+
+        .navbar-top-links>li>a:focus, .navbar-top-links>li>a:hover {
+            text-decoration: none;
+            background-color: #293846;
+            border-bottom:solid 3px #1ab394;
+        }
+    </style>
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+    <div id="wrapper">
+        <!--左侧导航开始-->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="nav-close"><i class="fa fa-times-circle"></i>
+            </div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span><img alt="image" class="img-circle" width="64" height="64" src="__SYSTEM__/img/profile_small.jpg " /></span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                               <span class="block m-t-xs"><strong class="font-bold">{:session('admin_user_auth.username')}</strong></span>
+                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <!--<li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                                </li>-->
+                                 <li><a class="J_menuItem" href="{:url('index/editpwd')}">修改密码</a>
+                                </li> 
+                                
+                                <li class="divider"></li>
+                                <li><a href="{:url('index/logout')}">安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                        </div>
+                    </li>
+                    <!-- <li>
+                        <a class="J_menuItem" href="index_v3.html"><i class="fa fa-home"></i> <span class="nav-label">主页</span></a>
+                    </li> -->
+
+                    {include file="index:menu" /}
+                </ul>
+            </div>
+        </nav>
+        <!--左侧导航结束-->
+        <!--右侧部分开始-->
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header"><a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        
+                    </div>
+                    <ul class="nav navbar-top-links navbar-left">
+                       
+                        <li class="hidden-xs">
+                            <a href="{:url('Order/index')}" class="J_menuItem" data-index="2">订单管理</a>
+                        </li>
+             
+                        <li class="hidden-xs">
+                            <a href="{:url('Configs/index')}" class="J_menuItem" data-index="4">系统管理</a>
+                        </li>
+                     <!--    <li class="hidden-xs">
+                            <a href="{:url('Index/del_cache')}" class="" onclick="return event.stopPropagation();">清除缓存</a>
+                        </li> -->
+                        
+                    </ul>
+
+                </nav>
+            </div>
+            <div class="row content-tabs">
+                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+                </button>
+                <nav class="page-tabs J_menuTabs">
+                    <div class="page-tabs-content">
+                        <a href="javascript:;" class="active J_menuTab" data-id="{:url('index_v3')}">首页</a>
+                    </div>
+                </nav>
+                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+                </button>
+                <div class="btn-group roll-nav roll-right">
+                    <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span>
+
+                    </button>
+                    <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                        <li class="J_tabShowActive"><a>定位当前选项卡</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li class="J_tabCloseAll"><a>关闭全部选项卡</a>
+                        </li>
+                        <li class="J_tabCloseOther"><a>关闭其他选项卡</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <a href="{:url('Public/logout')}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+            </div>
+            <div class="row J_mainContent" id="content-main">
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="{:url('index_v3')}" frameborder="0" data-id="{:url('index_v3')}" seamless></iframe>
+            </div>
+            <div class="footer">
+                <div class="pull-right">&copy; 2018-2018 <a href="" target="_blank"></a>
+                </div>
+            </div>
+        </div>
+        <!--右侧部分结束-->
+        <!--右侧边栏开始-->
+        <div id="right-sidebar">
+        </div>
+        <!--右侧边栏结束-->
+        <!--mini聊天窗口开始-->
+        <div class="small-chat-box fadeInRight animated">
+
+        </div>
+    </div>
+
+    <script src="__SYSTEM__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__SYSTEM__/js/plugins/layer/layer.min.js"></script>
+    <script src="__SYSTEM__/js/hplus.min.js?v=4.1.0"></script>
+    <script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
+    <script src="__SYSTEM__/js/plugins/pace/pace.min.js"></script>
+    
+    <script>
+        $(".navbar-header .navbar-minimalize").click(function(){
+            var nav_mini = $("body").hasClass('mini-navbar');
+            if(nav_mini){
+                $("body").removeClass('mini-navbar');
+            }else{
+                $("body").addClass('mini-navbar');
+            }
+            
+        })
+        
+        $(".nav-close").click(function(){
+            var nav_mini = $("body").hasClass('mini-navbar');
+            if(nav_mini){
+                $("body").removeClass('mini-navbar');
+            }else{
+                $("body").addClass('mini-navbar');
+            }
+            
+        })
+        
+       
+    </script>
+</body>
+
+
+<!--  / -->
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+</head>
+
+<body class="">
+    <div class="wrapper   animated fadeInRight">
+        
+       <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>字典管理</h5>
+                        <div class="ibox-tools">
+                            <!-- <a href="{:url('add')}" class="btn btn-primary btn-xs">添加文章</a> -->
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                            
+
+                            <form class="form-group form-inline iw-serach" action="{:url('index')}" method="get" >
+                                <input type="hidden" name="search" value="0">
+                                <div class="form-group">
+                                    <label class="control-label" for="keyword">关键词</label>
+                                    <input type="text" class="form-control input-sm" id="keyword" name="keyword" value="{:input('keyword')}" placeholder="用户名|手机号|邮箱" autocomplete="off">
+                                </div>
+                              
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-outline btn-sm">搜索</button>
+                                </div>
+                            </form>
+
+
+                        
+                            
+                            <table class="table  table-hover text-nowrap dataTable"  ">
+                                <thead>
+                                <tr>
+                                    
+                                    <th>ID</th>
+                                    <th>名称</th>
+                                    <th>类型</th>
+                                    <th>内容</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="list" id="vo"}
+                                        <tr>
+                                            
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.title}</td>
+                                            <td>{$vo.type}</td>
+                                            <td>{$vo.desc}</td>
+                                            <td>
+                                                {:build_tool_btn(
+                                                    'edit,del' , array(url('edit' , array('ids'=>$vo['id'])) , 
+                                                        'del('.$vo['id'].')'
+                                                    ),array('url')
+                                                )}
+                                                
+                                            </td>
+                                        </tr>
+                                    {/volist}
+
+                                </tbody>
+                            </table>
+
+                    <div class="hr-line-dashed"> </div>
+                            <nav>
+                                <ul data-plugin="twbsPagination" data-total-pages="50" class="pagination">
+                                {$page}
+                                </ul>
+                            </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+   
+
+
+   function del( id ){
+       layer.confirm('确认删除？', {
+        btn: ['是','否'] //按钮
+      }, function(){
+         _ajax("{:url('del')}" , {'ids': id , 'status':1 } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      });
+       
+    }
+
+
+    //批量更新
+    function multi( status ){
+       var ids = _getCheckData( '.i-checks' );
+       
+         _ajax("{:url('multi')}" , {'ids': ids , 'params':'status='+status } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      
+       
+    }
+</script>
+
+</body>
+
+</html>

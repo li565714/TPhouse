@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    {include file="base" /}
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content">
+       
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>服务器信息</h5>
+
+                    </div>
+                    <div class="ibox-content">
+                        <p>PHP框架：
+                            <a href="javascript:;" class="">THINKPHP3.2.3</a>
+                        </p>
+                        <p>当前ip：
+                            <a href="javascript:;" class="">{php} echo $_SERVER['REMOTE_ADDR'];{/php}</a>
+                        </p>
+                        <p>当前程序版本: 
+                            <a href="" >v1.0</a>
+                        </p>
+                        <p>服务器PHP版本   ：
+                            <a href="javascript:;" class="">{php} echo PHP_VERSION;{/php}</a>
+                        </p>
+                        <p>服务器日期时间       ：
+                            <a href="javascript:;" class="">{php} echo date('Y-m-d H:i:s' , time() );{/php}</a>
+                        </p>
+                        <p>服务器附件上传       ：
+                            <a href="javascript:;" class="">{php}echo ini_get('upload_max_filesize');{/php}</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+        
+</div>
+
+
+
+    
+
+</body>
+
+
+<!--  /index_v3.html -->
+</html>

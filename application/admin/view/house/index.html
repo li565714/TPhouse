@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+</head>
+
+<body class="">
+    <div class="wrapper   animated fadeInRight">
+        
+       <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>租房管理</h5>
+                        <div class="ibox-tools">
+                            <!-- <a href="{:url('add')}" class="btn btn-primary btn-xs">添加文章</a> -->
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                            <form class="form-group form-inline iw-serach" action="{:url('index')}" method="get" >
+                                <input type="hidden" name="search" value="0">
+                                <div class="form-group">
+                                    <label class="control-label" for="keyword">关键词</label>
+                                    <input type="text" class="form-control input-sm" id="keyword" name="keyword" value="{:input('keyword')}" placeholder="名称" autocomplete="off">
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label class="control-label" for="inputInlinePassword">创建时间</label>
+                                    <input name="start_time" value="{:input('start_time')}"  class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"> - 
+                                    <input name="end_time" value="{:input('end_time')}"  class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-outline btn-sm">搜索</button>
+                                </div>
+                            </form>
+
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <button class="btn btn-primary btn-outline margin-bottom-10 btn-sm iw-refresh"  type="button"><i class="fa fa-refresh"></i></button>
+                                    {:build_toolbar('del' , array( 'dels()' ) , array( 'func') )}
+                                    <div class="btn-group margin-bottom-10">
+                                        <button type="button" class="btn btn-primary btn-outline dropdown-toggle btn-sm " id="exampleSizingDropdown3" data-toggle="dropdown" aria-expanded="false">
+                                            更多 <span class="caret"></span>
+                                        </button>
+                                        <ul class=" pull-right dropdown-menu " aria-labelledby="exampleSizingDropdown3" role="menu">
+                                            {:build_tool_more_btn(
+                                                'enable,disable,推荐,取消推荐' , array('multi(1)' , 'multi(0)' , 'hot(1)', 'hot(0)')
+                                            )}
+                                        </ul>
+                                    </div>           
+                                </div>
+                               <!--  <div class="col-xs-6">
+                                    <div id="" style="float: right;">
+                                        <form role="form" class="form-inline">
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-outline btn-sm "   type="button">高级搜索</button>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="form-control input-sm"  placeholder="密码" autocomplete="off">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div> -->
+                            </div>
+                            
+                            <table class="table  table-hover text-nowrap dataTable"  ">
+                                <thead>
+                                <tr>
+                                    <th width="50" >
+                                        <span class="checkbox-custom checkbox-primary user-select-all"   >
+                                            <input type="checkbox" class="i-checks mailbox-checkbox selectable-all user-checkbox " onclick="_checkAll('.user-checkbox' , this);">
+                                            <label></label>
+                                        </span>
+                                    </th>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th width="15%">名称</th>
+                                    <th>联系方式</th>
+                                    <th>房租</th>
+                                    <th>类型</th>
+                                    <th>是否热门</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="list" id="vo"}
+                                        <tr>
+                                            <td>
+                                                <span class="checkbox-custom checkbox-primary user-select-all">
+                                                    <input type="checkbox" value="{$vo.id}"  class="i-checks user-checkbox selectable-all" >
+                                                    <label></label>
+                                                </span>
+                                            </td>
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.user_id|get_user_name|default='无'}</td>
+                                            <td>{$vo.title}</td>
+                                            <td>{$vo.phone}</td>
+                                            <td>￥{$vo.house_amount}</td>
+                                            <td>
+                                                {$vo['type_id']|get_dict_name}
+                                            </td>
+                                            <td>
+
+                                                {eq name ="vo['is_hot']" value="1" }
+                                                    <span class="text-navy glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                                {else/}
+                                                    <span class=" glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                {/eq}
+                                           
+                                            </td>
+                                            <td>
+
+                                                {eq name ="vo['status']" value="1" }
+                                                    <span class="text-navy glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                                {else/}
+                                                    <span class=" glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                {/eq}
+                                           
+                                            </td>
+                                            <td>
+                                                {:build_tool_btn(
+                                                    'edit,del' , array(url('edit' , array('ids'=>$vo['id'])) , 
+                                                        'del('.$vo['id'].')'
+                                                    ),array('url')
+                                                )}
+                                                
+                                            </td>
+                                        </tr>
+                                    {/volist}
+
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul data-plugin="twbsPagination" data-total-pages="50" class="pagination">
+                                {$page}
+                                </ul>
+                            </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+   
+
+
+   function del( id ){
+       layer.confirm('确认删除？', {
+        btn: ['是','否'] //按钮
+      }, function(){
+         _ajax("{:url('del')}" , {'ids': id , 'status':1 } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      });
+       
+    }
+
+
+    //批量更新
+    function multi( status ){
+       var ids = _getCheckData( '.i-checks' );
+       
+         _ajax("{:url('multi')}" , {'ids': ids , 'params':'status='+status } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      
+       
+    }
+
+
+    //批量更新
+    function hot( status ){
+       var ids = _getCheckData( '.i-checks' );
+       
+         _ajax("{:url('multi')}" , {'ids': ids , 'params':'is_hot='+status } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      
+       
+    }
+</script>
+
+</body>
+
+</html>

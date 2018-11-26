@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+</head>
+
+<body class="">
+    <div class="wrapper   animated fadeInRight">
+        
+       <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>用户管理</h5>
+                        <div class="ibox-tools">
+                            <!-- <a href="{:url('add')}" class="btn btn-primary btn-xs">添加文章</a> -->
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                            <form class="form-group form-inline iw-serach" action="{:url('index')}" method="get" >
+                                <input type="hidden" name="search" value="1">
+                                <div class="form-group">
+                                    <label class="control-label" for="keyword">关键词</label>
+                                    <input type="text" class="form-control input-sm" id="keyword" name="keyword" value="{:input('keyword')}" placeholder="用户名|手机号|邮箱" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="inputInlinePassword">密码</label>
+                                    <input type="password" class="form-control input-sm" id="inputInlinePassword" name="inputPassword" placeholder="密码" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="inputInlinePassword">注册时间</label>
+                                    <input name="start_time" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"> - 
+                                    <input  name="end_time"  class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                                </div>
+                                <!-- <div class="form-group">
+                                    <div class="checkbox-custom checkbox-default">
+                                        <input type="checkbox" id="inputInlineRemember" name="inputCheckboxRemember" checked="" autocomplete="off">
+                                        <label for="inputInlineRemember">自动登录</label>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-outline btn-sm">搜索</button>
+                                </div>
+                            </form>
+
+
+                            <div class="row">
+                                <div class="col-xs-6">
+
+                                    <button class="btn btn-primary btn-outline margin-bottom-10 btn-sm iw-refresh"  type="button"><i class="fa fa-refresh"></i></button>
+
+                                    {:build_toolbar('add,del' , array(url('add')  , 'dels()' ) , array('model' , 'func') )}
+                                 
+                                    <div class="btn-group margin-bottom-10">
+                                        <button type="button" class="btn btn-primary btn-outline dropdown-toggle btn-sm" id="exampleSizingDropdown3" data-toggle="dropdown" aria-expanded="false">
+                                            更多 <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="exampleSizingDropdown3" role="menu">
+                                            {:build_tool_more_btn(
+                                                'enable,disable' , array("location.href='" . url('edit' , array('id'=>1)) ."'"  , 'dels()')
+                                            )}
+                                            
+                                            <!-- <li class="divider" role="presentation"></li>
+                                            <li role="presentation">
+                                                <a href="javascript:;" role="menuitem">下拉菜单项4</a>
+                                            </li> -->
+                                        </ul>
+                                    </div>           
+                                </div>
+                            
+                            </div>
+                            
+                            <table class="table  table-hover text-nowrap dataTable"  ">
+                                <thead>
+                                <tr>
+                                    <th width="50" data-order="false">
+                                        <span class="checkbox-custom checkbox-primary user-select-all">
+                                            <input type="checkbox" class="i-checks" class="mailbox-checkbox selectable-all user-checkbox selectable-all"  onclick="$iw.checkAll('.user-checkbox' , this)">
+                                            <label></label>
+                                        </span>
+                                    </th>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>昵称</th>
+                                    <th>头像</th>
+                               
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="list" id="vo"}
+                                        <tr>
+                                            <td>
+                                                <span class="checkbox-custom checkbox-primary user-select-all">
+                                                    <input type="checkbox" class="i-checks user-checkbox selectable-all">
+                                                    <label></label>
+                                                </span>
+                                            </td>
+                                            <td>{$vo.id}</td>
+                                            <td>{$vo.username}</td>
+                                            <td>{$vo.nickname}</td>
+                                            <td><img src="{$vo.portrait|default='/static/admin/img/profile_small.jpg'}" width="50" height="50" /> </td>
+                                            <td>
+                                                {eq name ="vo['status']" value="1" }
+                                                    <span class="text-navy glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                                {else/}
+                                                    <span class=" glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                                {/eq}
+                                            </td>
+                                            <td>
+                                                {:build_tool_btn(
+                                                    'edit,del' , array(url('edit' , array('ids'=>$vo['id'])) , 
+                                                        'dels()'
+                                                    ),array('model')
+                                                )}
+                                                
+                                            </td>
+                                        </tr>
+                                    {/volist}
+
+                                </tbody>
+                            </table>
+                            <nav>
+                                <ul data-plugin="twbsPagination" data-total-pages="50" class="pagination">
+                                {$page}
+                                </ul>
+                            </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+    $(document).ready(function(){
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+
+
+    });
+    
+
+    
+    
+function radioall(){
+    
+    var btn=$("#qxbtn").val();
+        if(btn==0){
+            
+            $(".radiotr").each(function(){
+                
+                //$(this).children("input").attr('checked','');
+                $(this).children("td").children("input").prop('checked',true);
+                
+            });
+            $("#qxbtn").val(1);
+            
+        }else{
+            $(".radiotr").each(function(){
+                
+                $(this).children("td").children("input").removeAttr('checked');
+                
+            });
+            $("#qxbtn").val(0);
+        
+        }
+        
+    
+ }
+
+   function updateStatus( id ){
+       layer.confirm('审核通过？', {
+        btn: ['是','否'] //按钮
+      }, function(){
+         _ajax("{:url('updateStatus')}" , {'ids': id , 'status':1 } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      });
+       
+    }
+</script>
+
+</body>
+
+</html>

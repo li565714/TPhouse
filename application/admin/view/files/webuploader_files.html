@@ -1,0 +1,63 @@
+{extend name="base" /}
+{block name="main"}
+
+
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/plugins/webuploader/webuploader.css">
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/plugins/webuploader/webuploader-demo.min.css">
+    <style>
+        #uploader .placeholder{    padding-top: 78px;    min-height: 250px;}
+    </style>
+    <script src=" __ADMIN__/plugins/webuploader/webuploader.js"></script>
+    
+    <script type="text/javascript">
+        var BASE_URL = '__ADMIN__/plugins/webuploader/'; 
+        var server_url = "{:url('upload')}"; //网站上传地址
+        var _fileNumLimit = "{:input('limit',1)}";  //上传最大数量
+        var _fileSingleSizeLimit = "{:config('UPLOAD_FIEL_MAX_SIZE')}";
+        //上传成功回调方法  uploadCallback(info)
+        function uploadSuccess(info){ 
+            parent.uploadFileCallback(info.data);
+        } 
+    </script>
+    <script src="__ADMIN__/plugins/webuploader/webuploader-files.min.js"></script>
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeIn">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="ibox float-e-margins">
+                   
+                    <div class="ibox-content">
+                        <div class="page-container">
+                            <div id="uploader" class="wu-example">
+                                <div class="queueList">
+                                    <div id="dndArea" class="placeholder">
+                                        <div id="filePicker"></div>
+                                        <p>或将压缩包拖到这里，单次最多可选{:input('limit',1)}个</p>
+                                    </div>
+                                </div>
+                                <div class="statusBar" style="display:none;">
+                                    <div class="progress">
+                                        <span class="text">0%</span>
+                                        <span class="percentage"></span>
+                                    </div>
+                                    <div class="info"></div>
+                                    <div class="btns">
+                                        <!-- <div id="filePicker2"></div> -->
+                                        <div id="filePicker">选择文件</div>
+                                        <div class="uploadBtn">开始上传</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+{/block}

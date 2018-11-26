@@ -1,0 +1,237 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "4602f9a7dad5501438149cbd1d9a6a9f",
+    "packages": [
+        {
+            "name": "jaeger/phpquery-single",
+            "version": "0.9.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jae-jae/phpQuery-single.git",
+                "reference": "6c12e3a1648dc619f16920f96082f397d74e0127"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jae-jae/phpQuery-single/zipball/6c12e3a1648dc619f16920f96082f397d74e0127",
+                "reference": "6c12e3a1648dc619f16920f96082f397d74e0127",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "phpQuery.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tobiasz Cudnik",
+                    "email": "tobiasz.cudnik@gmail.com",
+                    "homepage": "https://github.com/TobiaszCudnik",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Jaeger",
+                    "role": "Packager"
+                }
+            ],
+            "description": "phpQuery单文件版本，是Querylist的依赖(http://querylist.cc/)，phpQuery项目主页:http://code.google.com/p/phpquery/",
+            "homepage": "http://code.google.com/p/phpquery/",
+            "time": "2017-12-07T02:13:37+00:00"
+        },
+        {
+            "name": "jaeger/querylist",
+            "version": "V3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jae-jae/QueryList.git",
+                "reference": "1a7864dcf8d979d6d57a2a3508f2dd62ce3233d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jae-jae/QueryList/zipball/1a7864dcf8d979d6d57a2a3508f2dd62ce3233d6",
+                "reference": "1a7864dcf8d979d6d57a2a3508f2dd62ce3233d6",
+                "shasum": ""
+            },
+            "require": {
+                "jaeger/phpquery-single": "^0.9",
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "monolog/monolog": "Log support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QL\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jaeger",
+                    "email": "JaegerCode@gmail.com"
+                }
+            ],
+            "description": "QueryList是基于phpQuery的无比强大的PHP采集工具",
+            "homepage": "http://querylist.cc",
+            "keywords": [
+                "QueryList",
+                "phpQuery",
+                "spider"
+            ],
+            "time": "2017-06-09T04:25:07+00:00"
+        },
+        {
+            "name": "topthink/framework",
+            "version": "v5.0.22",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/framework.git",
+                "reference": "b0514ee54c4703c1598d3caa3fad2b8a6a41e311"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/b0514ee54c4703c1598d3caa3fad2b8a6a41e311",
+                "reference": "b0514ee54c4703c1598d3caa3fad2b8a6a41e311",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "topthink/think-installer": "~1.0"
+            },
+            "require-dev": {
+                "johnkary/phpunit-speedtrap": "^1.0",
+                "mikey179/vfsstream": "~1.6",
+                "phpdocumentor/reflection-docblock": "^2.0",
+                "phploc/phploc": "2.*",
+                "phpunit/phpunit": "4.8.*",
+                "sebastian/phpcpd": "2.*"
+            },
+            "type": "think-framework",
+            "autoload": {
+                "psr-4": {
+                    "think\\": "library/think"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "liu21st",
+                    "email": "liu21st@gmail.com"
+                }
+            ],
+            "description": "the new thinkphp framework",
+            "homepage": "http://thinkphp.cn/",
+            "keywords": [
+                "framework",
+                "orm",
+                "thinkphp"
+            ],
+            "time": "2018-10-21T08:36:55+00:00"
+        },
+        {
+            "name": "topthink/think-captcha",
+            "version": "v1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-captcha.git",
+                "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-captcha/zipball/0c55455df26a1626a60d0dc35d2d89002b741d44",
+                "reference": "0c55455df26a1626a60d0dc35d2d89002b741d44",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "think\\captcha\\": "src/"
+                },
+                "files": [
+                    "src/helper.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "description": "captcha package for thinkphp5",
+            "time": "2016-07-06T01:47:11+00:00"
+        },
+        {
+            "name": "topthink/think-installer",
+            "version": "v1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-installer.git",
+                "reference": "1be326e68f63de4e95977ed50f46ae75f017556d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-installer/zipball/1be326e68f63de4e95977ed50f46ae75f017556d",
+                "reference": "1be326e68f63de4e95977ed50f46ae75f017556d",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0"
+            },
+            "require-dev": {
+                "composer/composer": "1.0.*@dev"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "think\\composer\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "think\\composer\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "time": "2017-05-27T06:58:09+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=5.4.0"
+    },
+    "platform-dev": []
+}

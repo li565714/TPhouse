@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+</head>
+
+<body class="">
+    <div class="wrapper   animated fadeInRight">
+        
+       <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>租房管理->编辑  <small><a href="{:url('index')}">返回上一页</a></small></h5>
+                        <div class="ibox-tools">
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form role="form" method="post" action="{:url('edit')}" enctype="multipart/form-data" class="form-horizontal m-t">
+                            <input type="hidden" name="ids" value="{$row.id}" />
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">标&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="title" value="{$row.title}" required class="form-control" placeholder="请输入标题">
+                                </div>
+                            </div>
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">小&nbsp;&nbsp;&nbsp;&nbsp;区：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="xq_id" value="{$row.xq_id|get_xq_name}" readonly="" class="form-control" placeholder="请选择你小区">
+                                </div>
+                            </div>
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">价&nbsp;&nbsp;&nbsp;&nbsp;格：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="house_amount" value="{$row.house_amount}" required class="form-control" placeholder="请输入价格">
+                                </div>
+                            </div>
+                            <div class="form-group   ">
+                                <label class="col-sm-2 control-label">房屋类型：</label>
+                                <div class="col-sm-1 ">
+                                    <input style="display: table;width: 50%;float: left;" type="text" name="room"  value="{$row.room}"  class="form-control " placeholder="室">
+                                    <span style="display: table;width: 50%;float: left;line-height:30px; "> &nbsp;&nbsp;&nbsp;&nbsp;室 </span>
+
+                                </div>
+                                <div class="col-sm-1">
+                                    <input style="display: table;width: 50%;float: left;" type="text" name="hall"  value="{$row.hall}"  class="form-control " placeholder="室">
+                                    <span style="display: table;width: 50%;float: left;line-height:30px;"> &nbsp;&nbsp;&nbsp;&nbsp; 厅 </span>
+                                </div>
+                               
+                                <div class="col-sm-1">
+                                    <input style="display: table;width: 50%;float: left;" type="text" name="who"  value="{$row.who}"  class="form-control " placeholder="室">
+                                    <span style="display: table;width: 50%;float: left;line-height:30px;">  &nbsp;&nbsp;&nbsp;&nbsp;卫 </span>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                                    <label class="col-sm-2 control-label">配&nbsp;&nbsp;&nbsp;&nbsp;置：</label>
+                                    <div class="col-sm-6">
+                                        {php} $config_ids = array_filter (explode(',' , $row['config_id']) ); {/php}
+                                        {volist name ="houseConfig" id ="vo"}
+                                            <label class="checkbox-inline" style="padding-left: 0px;">
+                                                <input type="checkbox" value="{$vo.code}" {php} if(in_array($vo['code'] , $config_ids) ) { echo 'checked' ; }{/php} name="config_id[]" class="i-checks" id="inlineCheckbox1"> {$vo.title}
+                                            </label>
+                                        {/volist}
+                                    </div>
+                            </div>
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">出租类型：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="type_id">
+                                       <option>请选择出租类型</option>
+                                       {volist name="config1" id="vo"}
+                                            <option value="{$vo.code}" {eq name="$row['type_id']" value="$vo['code']"} selected="" {/eq} >{$vo.title}</option>
+                                       {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">卧室类型：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="type_id">
+                                       <option>请选择卧室类型</option>
+                                       {volist name="config6" id="vo"}
+                                            <option value="{$vo.code}" {eq name="$row['room_type']" value="$vo['code']"} selected="" {/eq} >{$vo.title}</option>
+                                       {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">装修类型：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="decorate_id">
+                                       <option>请选择装修类型</option>
+                                       {volist name="config2" id="vo"}
+                                            <option value="{$vo.code}" {eq name="$row['decorate_id']" value="$vo['code']"} selected="" {/eq} >{$vo.title}</option>
+                                       {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group draggable ui-draggable">
+                                <label class="col-sm-2 control-label">面&nbsp;&nbsp;&nbsp;&nbsp;积：</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="area_size"  value="{$row.area_size}" class="form-control" placeholder="请输入面积">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">楼&nbsp;&nbsp;&nbsp;&nbsp;层：</label>
+                                <div class="col-sm-2">
+                                    <input style="display: table;width: 50%;float: left;" type="text" name="current_floor"  value="{$row.current_floor}"  class="form-control " placeholder="当前楼层">
+                                    <span style="display: table;width: 50%;float: left;line-height:30px; "> &nbsp;&nbsp;&nbsp;&nbsp;当前楼层 </span>
+                                </div>
+                               
+                                <div class="col-sm-2">
+                                    <input style="display: table;width: 50%;float: left;" type="text" name="countt_floor"  value="{$row.countt_floor}"  class="form-control " placeholder="总楼层">
+                                    <span style="display: table;width: 50%;float: left;line-height:30px; "> &nbsp;&nbsp;&nbsp;&nbsp;总楼层 </span>
+                                </div>
+                                
+                            </div>
+                
+
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">是否电梯：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="is_elevator">
+                                       <option value="1" {eq name="$row['is_elevator']" value="1"} selected="" {/eq} >有</option>
+                                       <option value="0" {neq name="$row['is_elevator']" value="1"} selected="" {/neq}>无</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">朝&nbsp;&nbsp;&nbsp;&nbsp;向：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="direction">
+                                       <option>请选择朝向</option>
+                                       {volist name="config4" id="vo"}
+                                            <option value="{$vo.code}" {eq name="$row['direction']" value="$vo['code']"} selected="" {/eq} >{$vo.title}</option>
+                                       {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">付款方式：</label>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="pay_type">
+                                       <option>请选择付款方式</option>
+                                       {volist name="config3" id="vo"}
+                                            <option value="{$vo.code}" {eq name="$row['pay_type']" value="$vo['code']"} selected="" {/eq} >{$vo.title}</option>
+                                       {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">文章描述：</label>
+                                <div class="col-sm-4">
+                                    <textarea class="form-control" style="height: 80px;" name="description" placeholder="请输入文章描述">{$row.description}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <label class="col-sm-2 control-label">联系方式：</label>
+                                <div class="col-sm-4">
+                                    <input type="text" name="phone"  value="{$row.phone}" class="form-control" placeholder="请输入联系方式">
+                                </div>
+                            </div>
+ 
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">缩略图：</label>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary" type="button" onclick="uploadImg('icon_img');">上传图片</button>
+                                    <span>&nbsp;推荐图片大小(240px*180px)</span>
+                                    <input type="hidden" name="imgs" id="icon_img" value="{$row.imgs}">
+                                    {if condition="$row['imgs']"}
+                                        <div class="icon_img" style=" display:block; margin-top: 10px;">
+                                            {php} $data_img = explode(",",$row['imgs']);{/php}
+                                            {volist name="data_img" id="img"}
+                                                <div class="goods_imgs">
+                                                    <img id="icon" style="width:100px;height:100px;" src="{$img|get_oss_img_crop}">
+                                                    <a onclick="clear_imgs(this,'{$img}','#icon_img');" class="closeico layui-layer-close layui-layer-close2" href="javascript:;"></a>
+                                                </div>
+                                            {/volist}
+                                        </div>
+                                    {else/}
+                                        <div class="icon_img" style=" display:none; margin-top: 10px;">
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
+                           
+                        
+                        <div class="hr-line-dashed">
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+
+    $(document).ready(function(){
+        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+
+
+    });
+    
+
+    
+    
+function radioall(){
+    
+    var btn=$("#qxbtn").val();
+        if(btn==0){
+            
+            $(".radiotr").each(function(){
+                
+                //$(this).children("input").attr('checked','');
+                $(this).children("td").children("input").prop('checked',true);
+                
+            });
+            $("#qxbtn").val(1);
+            
+        }else{
+            $(".radiotr").each(function(){
+                
+                $(this).children("td").children("input").removeAttr('checked');
+                
+            });
+            $("#qxbtn").val(0);
+        
+        }
+        
+    
+ }
+
+   function updateStatus( id ){
+       layer.confirm('审核通过？', {
+        btn: ['是','否'] //按钮
+      }, function(){
+         _ajax("{:url('updateStatus')}" , {'ids': id , 'status':1 } , 'post' , function(ret){
+            if( ret.code == 1){
+              _toast(ret.msg, 'success' , function(){
+                location.reload();
+              }) 
+            } else {
+              _toast(ret.msg, 'error');
+            } 
+        });
+      });
+       
+    }
+
+
+
+
+    var upload_dom = this;
+    var upload_ap = true;
+    var icon_dom = this;
+
+
+
+
+    function uploadImg(el) {
+        upload_dom = "#"+el;
+        icon_dom = "."+el;
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: 1,
+            //不显示关闭按钮
+            shade: [0],
+            area: ['640px', '390px'],
+            anim: 2,
+            content: ["{:url('files/webuploader',array('limit'=>5))}"],
+
+        });
+    }
+    //图片上传回调方法
+    function uploadCallback(info) {
+
+        var upload_img_paths = $(upload_dom).val();
+        var goodsImg = '<div class="goods_imgs"><img id="icon" style="width:100px;height:100px;" src="' + info.path + '">';
+            goodsImg +='<a onclick="clear_imgs(this,\''+info.file+'\',\''+upload_dom+'\');" class="closeico  layui-layer-close layui-layer-close2" href="javascript:;"></a></div>';
+
+        if (upload_ap == true) {
+            if (upload_img_paths == "") {
+                $(upload_dom).val(info.file);
+            } else {
+                $(upload_dom).val(upload_img_paths + "," + info.file);
+            }
+
+            $(icon_dom).append(goodsImg);
+        } else {
+            $(upload_dom).val(info.file);
+            $(icon_dom).html(goodsImg);
+        }
+
+        $(icon_dom).show();
+
+    }
+    
+    //删除相册图片
+    function clear_imgs(el,path,arrImg){
+        var th_arr = [];
+        var th_val = $(arrImg).val();
+        th_arr = th_val.split(",");
+        var is_arr = $.inArray(path.toString(),th_arr);
+        //判断是否存在 不存在则追加 存在则修改
+        if(is_arr > -1){
+            th_arr.splice(is_arr,1);
+            //console.log(th_arr);
+            $(arrImg).val(th_arr);
+            $(el).parents(".goods_imgs").remove();
+        }
+        
+    }
+</script>
+
+</body>
+
+</html>

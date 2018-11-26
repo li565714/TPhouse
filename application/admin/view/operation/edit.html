@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+{include file="base" /} 
+<script type="text/javascript">        
+    var BASE_URL = '__SYSTEM__/js/plugins/webuploader/';     
+    var server_url = "{:url('Public/upload')}";    </script>
+<script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>编辑广告位</h5>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" method="post" action="{:url('editAdvert')}" class="form-horizontal m-t">
+                        <div class="form-group draggable ui-draggable">
+                            <label class="col-sm-2 control-label">广告位名称：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="advert_name" value="{$row.advert_name}" required class="form-control" placeholder="请输入网站名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">时间限制：</label>
+                            <div class="col-sm-8">
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio1" value="0" name="timeset" checked="">
+                                    <label for="inlineRadio1"> 永不过期 </label>
+                                </div>
+                                <div class="radio radio-inline">
+                                    <input type="radio" id="inlineRadio2" value="1" name="timeset">
+                                    <label for="inlineRadio2"> 在设定时间内有效 </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <label class="col-sm-2 control-label">开始时间：</label>
+                            <div class="col-sm-4">
+                                <input name="start_time" value="{$row.start_time|date='Y-m-d H:i:s',###}" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                                <label class="laydate-icon"></label>
+                            </div>
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <label class="col-sm-2 control-label">结束时间：</label>
+                            <div class="col-sm-4">
+                                <input name="end_time" value="{$row.end_time|date='Y-m-d H:i:s',###}" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+                                <label class="laydate-icon"></label>
+                            </div>
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <label class="col-sm-2 control-label">广告内容</label>
+                            <div class="col-sm-7">
+                                <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="tab-2" class="tab-pane active">
+                                            <div class="panel-body">
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">图片地址：</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" id="upload_img_paths" name="img_path" value="{$row.img_path}" class="form-control" placeholder="请输入图片地址">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">图片链接：</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" name="img_url" value="{$row.img_url}" class="form-control" placeholder="请输入图片链接">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">上传图片：</label>
+                                                    <div class="col-sm-3">
+                                                        <button class="btn btn-primary" type="button" onclick="uploadImg();">上传图片</button>
+                                                        {if condition="$row['img_path'] neq null"}
+                                                        <div class="icon_img" style=" margin-top: 10px;">
+                                                            <img id="icon" style="width:200px;height:80px;" src="{$row['img_path']|get_oss_img_crop}">
+                                                        </div>
+                                                        {else/}
+                                                        <div class="icon_img" style=" display:none; margin-top: 10px;">
+                                                            <img id="icon" style="width:200px;height:80px;" src="">
+                                                        </div>
+                                                        {/if}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <label class="col-sm-2 control-label">过期显示内容：</label>
+                            <div class="col-sm-3">
+                                <textarea name="expbody" value="{$row.expbody}" style="width:700px;height:150px;" width="500" height="300"></textarea>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed">
+                        </div>
+                        <div class="form-group draggable ui-draggable">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <input type="hidden" name="id" value="{:input('id',0)}">
+                                <button class="btn btn-primary" type="submit">保存内容</button>
+                                <button class="btn btn-white" type="submit">取消</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- layerDate plugin javascript -->
+<script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+<script>
+        //外部js调用
+
+     function uploadImg(el) {
+        upload_dom = "#"+el;
+        icon_dom = "."+el;
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: 1,
+            //不显示关闭按钮
+            shade: [0],
+            area: ['640px', '390px'],
+            anim: 2,
+            content: ["{:url('files/webuploader',array('limit'=>5))}"],
+
+        });
+    }
+     function uploadCallback(info) {
+        $("#upload_img_paths").val(info.file);
+        $("#icon").attr('src', info.path);
+        $(".icon_img").show();
+     }
+       
+    </script>
+<script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+</body>
+</html>

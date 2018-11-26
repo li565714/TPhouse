@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+
+	<script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
+</head>
+
+<body class="">
+    <div class="wrapper   animated fadeInRight">
+        
+       <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>广告位管理</h5>
+                        <div class="ibox-tools">
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                    	<form class="form-group form-inline iw-serach" action="{:url('index')}" method="get" >
+                                <input type="hidden" name="search" value="1">
+                                <div class="form-group">
+                                    <label class="control-label" for="keyword">关键词</label>
+                                    <input type="text" class="form-control input-sm" id="keyword" name="keyword" value="{:input('keyword')}" placeholder="您输入搜索关键词" autocomplete="off">
+                                </div>
+                              
+                               
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-outline btn-sm">搜索</button>
+                                </div>
+                            </form>
+
+
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <button class="btn btn-primary btn-outline margin-bottom-10 btn-sm iw-refresh"  type="button"><i class="fa fa-refresh"></i></button>
+                                    {:build_toolbar( array('add','del') , array(  url('add_column') ,  'dels()' ) , array('url', 'func') )}
+                                    <div class="btn-group margin-bottom-10">
+                                       
+                                    </div>           
+                                </div>
+
+                            </div>
+
+						<div class="table-responsive">
+	                        <table class="table table-hover">
+	                            <thead>
+	                                <tr>
+	                                    <th></th>
+	                                    <th>编号</th>
+											 <th>网站名称</th>
+											 <th>广告位时间</th>
+											 <th>排序</th>
+											 <th>操作</th>
+	                                </tr>
+	                            </thead>
+	                            <tbody>
+										{volist name="list" id="vo"}
+											<tr class="radiotr">
+											    <td><input type="checkbox"  class="i-checks" value="{$vo.id}" name="ids[]"></td>
+												<td>{$vo.id}</td>
+												<td><a {if condition="$vo['pid'] eq 0"} href="{:url('advlist',array('pid'=>$vo['id']))}" {/if} >{$vo.advert_name}</a></td>
+												<td>{if condition="$vo['timeset'] eq 1"}{$vo.start_time|date="Y-m-d H:i:s",###} - {$vo.end_time|date="Y-m-d H:i:s",###}{else/}永不过期{/if} </td>
+												<td>{$vo.sort|default=0}</td>
+
+												<td>
+													
+													{if condition="$vo['pid'] eq 0 "}
+														<a   href="{:url('addAdvert',array('pid'=>$vo['id']))}">增加广告位</a>
+														<a   href="{:url('edit_column',array('id'=>$vo['id']))}">编辑</a>
+													{else/}
+														<a   href="{:url('editAdvert',array('id'=>$vo['id']))}">编辑</a>
+														<a   href="{:url('delAdvert',array('id'=>$vo['id']))}">删除</a>
+													{/if}
+													
+													
+												</td>
+												
+											</tr>
+										{/volist}
+										
+										
+	                            
+	                            </tbody>
+	                        </table>
+
+						</div>
+                    </div>
+					
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+
+<script>
+
+    $(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});
+	
+	function dels(){
+			//获取选择的值
+			var ids = _getCheckData(".i-checks");
+			
+			_ajax("{:url('dels')}",{'ids':ids},'post',function(ret){
+				_toast(ret.info);
+				location.reload();
+				// location.href=ret.url;
+			});
+		}
+	
+</script>
+</html>

@@ -1,0 +1,158 @@
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>后台管理系统</title>    
+    <meta name="keywords" content="后台管理系统">    
+    <meta name="description" content="后台管理系统">
+    <link href="__SYSTEM__/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="__SYSTEM__/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="__SYSTEM__/css/animate.min.css" rel="stylesheet">
+    <link href="__SYSTEM__/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	<!-- ios -->
+	<link href="__SYSTEM__/css/plugins/switchery/switchery.css" rel="stylesheet">
+	<!-- 单选 -->
+	<link href="__SYSTEM__/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+	<link href="__SYSTEM__/css/plugins/iCheck/custom.css" rel="stylesheet">
+	<!-- 通知 -->
+	<link href="__SYSTEM__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+	<style>
+        /* IOS选择样式*/
+		.switchery{height:20px;width:40px;}
+		.switchery small{height:20px;width:20px;}
+		.s-form-member{height:25px;padding:0px;width:50px;}
+		
+        /* 分页样式*/ 
+		.pages a,.pages span{margin-bottom: 5px;    color: inherit;background: #fff;
+			border: 1px solid #e7eaec;display: inline-block;padding: 6px 12px;margin-bottom: 0;
+			font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;
+			white-space: nowrap;vertical-align: middle;-ms-touch-action: manipulation;
+			touch-action: manipulation;cursor: pointer;-webkit-user-select: none;
+		}
+        /* 分页样式*/ 
+		.pages span.current{
+            color: inherit;border: 1px solid #d2d2d2;box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+		}
+        
+        /* 复选按钮 文字位置*/
+        .checkbox label {
+            padding-left: 0px;
+        }
+        
+        /* 日期ICON大小 */
+        .laydate-icon{
+            height: 30px!important;min-width: 30px!important;
+        }
+
+        .goods_imgs{float: left; margin-left: 10px;position:relative;}
+        .closeico{background: url(__SYSTEM__/img/quxiao.png);position:absolute;width:25px;height:25px;background-size: 25px; top:-5px; left: 86px;}
+	</style>
+	
+	<script src="__SYSTEM__/js/jquery.min.js?v=2.1.4"></script>
+	<script src="__SYSTEM__/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="__SYSTEM__/js/bootstrap.min.js"></script>
+    <script src="__SYSTEM__/js/content.min.js?v=1.0.0"></script>
+	<!-- 单选 -->
+    <script src="__SYSTEM__/js/plugins/iCheck/icheck.min.js"></script>
+	<!-- ios -->
+    <script src="__SYSTEM__/js/plugins/switchery/switchery.js"></script>
+	
+	<!-- layer 弹窗 -->
+	<script src="__SYSTEM__/js/plugins/layer/layer.min.js"></script>
+	<!-- 通知 -->
+	<script src="__SYSTEM__/js/plugins/toastr/toastr.min.js"></script>
+
+	<script>
+
+		 $(document).ready(function(){
+	        $(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",});
+
+	    });
+			 
+		/**
+		 * ajax请求
+		 * @param string     url      ajax请求地址
+		 * @param array      data     请求数据 json对象  {'1':1,'2':2}
+		 * @param string    _method   请求类型 默认 post
+		 * @param function  _call     请求成功回调函数
+		 * @param string    _datatype 回调类型 默认 json
+		 * @param filestr   _files    文件路径  {'file1':file}
+		 */
+		var _ajax = function(url,data,_method,_call,_datatype){
+			var _data = ( typeof arguments[1] == "undefined" || arguments[1] == null) ? {}  : arguments[1];
+			var _method = ( typeof arguments[2] == "undefined" || arguments[2] == null) ? "post"  : arguments[2];
+			var _datatype = ( typeof arguments[4] == "undefined" || arguments[4] == null) ? "json"  : arguments[4];
+			var _files = ( typeof arguments[5] == "undefined" || arguments[5] == null) ? {}  : arguments[5];
+			
+
+			$.ajax({
+				url: url,
+				data: _data,
+				method:_method,
+				dataType:_datatype,
+				success: function(ret){
+					if ( typeof _call == "function") {
+						_call(ret);
+					}
+				},
+				error:function(){
+					_toast('网络链接失败，请稍后重试!','error');
+					return false;
+				}
+			});
+			
+		}
+		
+		//提示信息
+		var _toast = function(msg,type,callback,delay){
+			var _type = ( typeof arguments[1] == "undefined" || arguments[1] == null) ? 'success'  : arguments[1];
+			var delay = ( typeof arguments[3] == "undefined" || arguments[3] == null  ||  arguments[3]=='') ? 1500  : arguments[3];  //延迟时长
+			
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "showDuration": "400",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+			
+			Command: toastr[_type](msg);
+			
+			if ( typeof callback == "function") {
+				setTimeout(function(){
+					callback();
+				},delay); 
+			}
+		}
+		
+		
+		//全选
+		var _checkAll = function(el,that){
+			var _that = $(that).attr('checkedall');
+
+			if(_that == 1  ||  typeof(_that) =='undefined'){
+				$(el).iCheck('check');
+				$(that).attr('checkedall',0);
+			}else{
+				$(el ).iCheck('uncheck');
+				$(that).attr('checkedall',1);
+			}
+			
+		}
+		//获取选择的值
+		var _getCheckData = function(el){
+			var checkArr = [];
+			$(el+":checked").each(function(){
+				checkArr.push($(this).val());
+			});
+			return checkArr;
+		}
+	</script>

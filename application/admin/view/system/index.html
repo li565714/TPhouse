@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+{include file="base" /} 
+
+<style>
+    .goods_imgs{width:300px;float:left;margin:0px 5px;position:relative;}
+    .closeico{background: url(__SYSTEM__/img/quxiao.png);position:absolute;width:25px;height:25px;background-size: 25px; top:-8px; right:-10px;}
+ </style>
+</head>
+
+<body class="">
+    <div class="wrapper animated fadeInRight">
+        
+        <div class="row">
+            
+            <div class="col-sm">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>系统管理</h5>
+                    </div>
+                    <div class="ibox-content">
+                            <form role="form" method="post" action="{:url('edit')}" enctype="multipart/form-data" class="form-horizontal m-t">
+                            <div class="tabs-container">
+                                    <ul class="nav nav-tabs">
+                                        <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> 站点设置</a>
+                                        </li>
+                                        <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">VIP解析设置</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="tab-1" class="tab-pane active">
+                                            <div class="panel-body">
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">网站名称：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="web_name" value="{$web_config.web_name}"  class="form-control" placeholder="请输入网站名称">
+                                                    </div>
+                                                </div>
+
+                                           
+                                                <div class="form-group">
+                                                    <label class="col-sm-2 control-label">网站logo：</label>
+                                                    <div class="col-sm-3">
+                                                        <button class="btn btn-primary" type="button" onclick="uploadImg('icon_img');">上传图片</button>
+                                                        <span>&nbsp;推荐图片大小(200px*200px)</span>
+                                                        <input type="hidden" name="logo" id="icon_img" value="{$web_config.logo}">
+                                                        {if condition="$web_config['logo']"}
+                                                        <div class="icon_img" style=" display:block; margin-top: 10px;">
+                                                            {php} $data_img = explode(",",$web_config['logo']);{/php}
+                                                            {volist name="data_img" id="img"}
+                                                                <div class="goods_imgs">
+                                                                    <img id="icon" style="width:100px;height:100px;" src="{$img|get_oss_img_crop=200,200}">
+                                                                    <a onclick="clear_imgs(this,'{$img}','#icon_img');" class="closeico layui-layer-close layui-layer-close2" href="javascript:;"></a>
+                                                                </div>
+                                                            {/volist}
+                                                        </div>
+                                                        {else/}
+                                                            <div class="goods_img" style=" display:none; margin-top: 10px;">
+                                                            </div>
+                                                            <div class="icon_img" style=" display:none; margin-top: 10px;">
+                                                            </div>
+                                                        {/if}
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">关键字：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="keywords" value="{$web_config.keywords}"   class="form-control" placeholder="默认关键字">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">站点描述：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="description" value="{$web_config.description}"   class="form-control" placeholder="站点描述">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">QQ：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="QQ" value="{$web_config.QQ}"   class="form-control" placeholder="网站QQ">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div id="tab-2" class="tab-pane">
+                                            <div class="panel-body">
+                                                <!-- <div class="form-group draggable ui-draggable">
+                                                        <label class="col-sm-2 control-label">是否开启邮件功能：
+                                                        </label>
+
+                                                         <div class="col-sm-8">                                                         
+                                                            <div class="radio radio-info radio-inline">                                                             
+                                                                <input type="radio" id="inlineRadio1" value="1" name="is_mail" {if condition="$sys_web_option['is_mail'] eq 1"} checked="" {/if} >                                          
+                                                                <label for="inlineRadio1"> 开启 </label>
+                                                                </div>
+                                                            <div class="radio radio-inline">
+                                                                <input type="radio" id="inlineRadio2" value="0" name="is_mail" {if condition="$sys_web_option['is_mail'] neq 1"} checked="" {/if} > 
+                                                                <label for="inlineRadio2"> 关闭 </label>
+                                                            </div>                                                                                                                  </div>
+                                                    </div> -->
+                                                
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">视频解析地址：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="vip_jx_url" value="{$web_config.vip_jx_url}"  class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">视频解析地址2：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="vip_jx_url2" value="{$web_config.vip_jx_url2}"  class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">视频解析地址3：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="vip_jx_url3" value="{$web_config.vip_jx_url3}"  class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">视频解析地址4：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="vip_jx_url4" value="{$web_config.vip_jx_url4}"  class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group draggable ui-draggable">
+                                                    <label class="col-sm-2 control-label">视频解析地址5：</label>
+                                                    <div class="col-sm-3">
+                                                        <input type="text" name="vip_jx_url5" value="{$web_config.vip_jx_url5}"  class="form-control" placeholder="">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group draggable ui-draggable">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                </div>
+                            </div>
+                        </form>
+                      
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>$(document).ready(function(){$(".i-checks").iCheck({checkboxClass:"icheckbox_square-green",radioClass:"iradio_square-green",})});  
+
+
+
+    var upload_dom = this;
+    var upload_ap = false;
+    var icon_dom = this;
+
+
+
+
+    function uploadImg(el) {
+        upload_dom = "#"+el;
+        icon_dom = "."+el;
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: 1,
+            //不显示关闭按钮
+            shade: [0],
+            area: ['640px', '390px'],
+            anim: 2,
+            content: ["{:url('files/webuploader',array('limit'=>1))}"],
+
+        });
+    }
+    //图片上传回调方法
+    function uploadCallback(info) {
+
+        var upload_img_paths = $(upload_dom).val();
+        var goodsImg = '<div class="goods_imgs"><img id="icon" style="width:100px;height:100px;" src="' + info.path + '">';
+            goodsImg +='<a onclick="clear_imgs(this,\''+info.file+'\',\''+upload_dom+'\');" class="closeico layui-layer-ico layui-layer-close layui-layer-close2" href="javascript:;"></a></div>';
+
+        if (upload_ap == true) {
+            if (upload_img_paths == "") {
+                $(upload_dom).val(info.file);
+            } else {
+                $(upload_dom).val(upload_img_paths + "," + info.file);
+            }
+
+            $(icon_dom).append(goodsImg);
+        } else {
+            $(upload_dom).val(info.file);
+            $(icon_dom).html(goodsImg);
+        }
+
+        $(icon_dom).show();
+
+    }
+
+    
+    //删除相册图片
+    function clear_imgs(el,path,arrImg){
+        var th_arr = [];
+        var th_val = $(arrImg).val();
+        th_arr = th_val.split(",");
+        var is_arr = $.inArray(path.toString(),th_arr);
+        //判断是否存在 不存在则追加 存在则修改
+        if(is_arr > -1){
+            th_arr.splice(is_arr,1);
+            //console.log(th_arr);
+            $(arrImg).val(th_arr);
+            $(el).parents(".goods_imgs").remove();
+        }
+        
+    }
+
+ </script>
+
+</body>
+
+</html>

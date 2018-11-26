@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<include file="Public/header" /> 
+<script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        
+        <div class="row">
+            
+            <div class="col-sm">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>添加广告位</h5>
+                    </div>
+                    <div class="ibox-content">
+							<form role="form" method="post" action="{:U('edit_column')}" class="form-horizontal m-t">
+                           
+							   
+								<div class="form-group draggable ui-draggable">
+									<label class="col-sm-2 control-label">广告位名称：</label>
+									<div class="col-sm-3">
+										<input type="text" value="{$data.advert_name}" name="advert_name" required class="form-control" placeholder="请输入网站名称">
+									  
+									</div>
+								</div>
+							
+								<div class="form-group">
+									<label class="col-sm-2 control-label">时间限制：</label>
+
+									<div class="col-sm-8">
+										<div class="radio radio-info radio-inline">
+											<input type="radio" id="inlineRadio1" <if condition="$data['timeset'] eq 0">checked="" </if> value="0" name="timeset" >
+											<label for="inlineRadio1"> 永不过期 </label>
+										</div>
+										
+										<div class="radio radio-inline">
+											<input type="radio" id="inlineRadio2" <if condition="$data['timeset'] eq 1">checked="" </if> value="1" name="timeset">
+											<label for="inlineRadio2"> 在设定时间内有效 </label>
+										</div>
+										
+									</div>
+								</div>
+								
+				
+								
+								<div class="form-group draggable ui-draggable">
+									<label class="col-sm-2 control-label">开始时间：</label>
+									<div class="col-sm-4">
+									   <input name="start_time" value="{$data.start_time|date='Y-m-d H:i:s',###}" class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									   <label class="laydate-icon"></label>
+									</div>
+										
+								</div>
+								<div class="form-group draggable ui-draggable">
+								   
+										<label class="col-sm-2 control-label">结束时间：</label>
+									<div class="col-sm-4">
+									   <input  name="end_time" value="{$data.end_time|date='Y-m-d H:i:s',###}"   class="form-control layer-date" placeholder="YYYY-MM-DD hh:mm:ss" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+									   <label class="laydate-icon"></label>
+									</div>
+								</div>
+								
+  
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group draggable ui-draggable">
+                                <div class="col-sm-10 col-sm-offset-1">
+									<input type="hidden" name="id" value="{:I('id',0)}">
+                                    <button class="btn btn-primary" type="submit">保存内容</button>
+                                    <button class="btn btn-white" type="submit">取消</button>
+                                </div>
+                            </div>
+                        </form>
+                      
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	   <!-- layerDate plugin javascript -->
+    <script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
+    <script>
+        //外部js调用
+
+        //日期范围限制
+        var start = {
+            elem: '#start',
+            format: 'YYYY/MM/DD hh:mm:ss',
+            min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16 23:59:59', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function (datas) {
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+        var end = {
+            elem: '#end',
+            format: 'YYYY/MM/DD hh:mm:ss',
+            min: laydate.now(),
+            max: '2099-06-16 23:59:59',
+            istime: true,
+            istoday: false,
+            choose: function (datas) {
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        };
+        laydate(start);
+        laydate(end);
+    </script>
+	
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+ 
+
+</body>
+
+</html>
