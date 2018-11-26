@@ -15,6 +15,8 @@ class Collect extends Base
 
         $this->model = model('CollectRule');
         $this->allowField = true;
+
+        $this->collect_rule = config('web.collect_rule');
       
     }
     /**
@@ -38,10 +40,6 @@ class Collect extends Base
         set_time_limit(0);
         $queryList = new QueryList();
         
-        
-       
-        
-
         
         //列表页地址
         $list_url = 'https://bj.zu.anjuke.com/';
@@ -123,17 +121,35 @@ class Collect extends Base
             );
             
             $datas[$key] = $infoData->data[0];
-            $datas[$key]['houseid'] = $value['houseid'];
+            $datas[$key]['soure_id'] = $value['houseid'];
             $datas[$key]['soure'] = 'anjuke';
-            dump($datas);
-            break;
 
+            //判断是否采集过
+            $isCollect = model('collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
+            if(  $isCollect ){
+                 unset($datas[$key]);
+                 continue;
+            }
+              
+
+            $newData[0] = $datas[$key];
+            $ndata =  $this->collectStrToId( $newData ) ;
+            unset($datas[$key]);
+            $ndata[0]['id']="";
+
+            $houseModel = model('house');
+            $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
+
+            //增加采集日志
+            model('collect_log')->insert( array(
+                'house_id' => $houseModel->id , 
+                'soure_id' => $ndata[0]['soure_id'],
+                'soure'    =>'anjuke'
+            ));
         }
 
-        foreach ($infoData->data as $key => $value) {
-            
-        }
-
+       
+        echo 'ok';
 
 
 
@@ -175,7 +191,127 @@ class Collect extends Base
         
     }
 
-   
+    /**
+     * 采集内容转换
+     */
+    private function collectStrToId( $data = array() ){
+        $ak = config('web.Bmap_ak');
+        foreach ($data as $key => $value) {
+            //判断小区是否存在
+            $xiaoqu = model('xiaoqu')->where('name' , $value['xq_id'])->find();
+            if( $xiaoqu ){
+                $data[$key]['xq_id'] = $xiaoqu['id'];
+            } else {
+                //不存在则 地图获取小区经纬度
+                $url = 'http://api.map.baidu.com/geocoder/v2/?address='.$value['xq_id'].'&city=北京&output=json&ak=' . $ak ;
+                $bmapResult = $this->curlQuery( $url , array() ,  0);
+                $bmapResult = json_decode($bmapResult , true);
+                //没有找到小区则退出当前循环
+                if( $bmapResult['status'] == 0 ){
+                    //保存小区信息
+                    $xq_id = model('xiaoqu')->insertGetId( array(
+                        'name' => $value['xq_id'] , 
+                        'lat' => $bmapResult['result']['location']['lat'],
+                        'lon' => $bmapResult['result']['location']['lng']
+                    ));
+                    if( $xq_id ){
+                        $data[$key]['xq_id'] = $xq_id;
+                    } else {
+                        unset( $data[$key]);
+                        continue;
+                    }
+                    
+                }else {
+                    unset( $data[$key]);
+                    continue;
+                }
+            }
+
+            //出租类型
+            $type_ids = $this->collect_rule['type_id'];
+            foreach ($type_ids as $type_key => $type_val) {
+                if( strpos($type_val , $value['type_id'] ) !==false){
+                    $data[$key]['type_id'] = $type_key;
+                    break;
+                }
+            }
+
+            //装修类型
+            $decorate_ids = $this->collect_rule['decorate_id'];
+            foreach ($decorate_ids as $decorate_key => $decorate_val) {
+                if( strpos( $decorate_val , $value['decorate_id']  ) !==false){
+                    $data[$key]['decorate_id'] = $decorate_key;
+                    break;
+                }
+            }
+
+            //方向
+            $direction_ids = $this->collect_rule['direction'];
+            foreach ($direction_ids as $k => $val) {
+                if( strpos( $val , $value['direction']  ) !==false){
+                    $data[$key]['direction'] = $k;
+                    break;
+                }
+            }
+
+            //支付方式
+            $pay_types = $this->collect_rule['pay_type'];
+            foreach ($pay_types as $k => $val) {
+                if( strpos( $val , $value['pay_type']  ) !==false){
+                    $data[$key]['pay_type'] = $k;
+                    break;
+                }
+            }
+
+            //房间配置
+            $configs = $this->collect_rule['config'];
+            $config_ids = [];
+            if($value['config']){
+                foreach ($value['config'] as $conKey => $conVal) {
+
+                    foreach ($configs as $k => &$val) {
+                        if( strpos( $val , $conVal  ) !== false){
+                            $config_ids[] = $k;
+                            unset($val);
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            $data[$key]['config_id'] = implode(',', $config_ids) ;
+
+        }
+        return $data;
+    }
+
+
+    private function curlQuery( $url , $postdata = array() , $isPost = 1  , $header = array () ){
+
+        //$header[]= 'X-APICloud-AppKey:'.$appKey;
+
+        $ch=curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);//设置否输出到页面
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10 ); //设置连接等待时间
+        curl_setopt($ch, CURLOPT_HEADER, 0);   //返回头部信息
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        if( $isPost == 1){
+            curl_setopt($ch, CURLOPT_POST, $isPost);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        }
+        
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);//这个是重点。
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 检查证书中是否设置域名  
+        $data=curl_exec($ch);
+        curl_close($ch);
+    
+        return $data;
+    }
+
+
 
 
 }

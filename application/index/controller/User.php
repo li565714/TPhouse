@@ -135,6 +135,7 @@ class User extends Base
         $dictModel = model('house_dict');
         foreach ($list as $key => $value) {
            
+            $imgs_path = [];
             $list[$key]['imgs_path'] = [];
             //获取图片信息
             if( $value['imgs']){
@@ -182,7 +183,7 @@ class User extends Base
 
         $dictModel = model('house_dict');
         foreach ($list as $key => $value) {
-           
+            $imgs_path = [];
             $list[$key]['imgs_path'] = [];
             //获取图片信息
             if( $value['imgs']){
@@ -249,6 +250,7 @@ class User extends Base
                 ->paginate($page_size);
 
         foreach ($list as $key => $value) {
+            $imgs_path = [];
             $list[$key]['imgs_path'] = [];
             //获取图片信息
             if( $value['imgs']){

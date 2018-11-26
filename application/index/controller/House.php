@@ -100,11 +100,12 @@ class House extends Base
         foreach ($list as $key => $value) {
             $list[$key]['phone'] = substr_replace($value['phone'],'****',3,4);
             
-
+            $imgs_path = [];
             $list[$key]['imgs_path'] = [];
             //获取图片信息
             if( $value['imgs']){
                 $img = explode(',', $value['imgs']);
+                
                 foreach ($img as $k => $val) {
                     $imgs_path[] = get_oss_img_crop( $val , 300 , 220 );
                 } 

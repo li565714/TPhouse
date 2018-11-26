@@ -24,8 +24,8 @@ return [
    'vip_jx_url4' => 'http://app.baiyug.cn:2019/vip/index.php?url=',
    'vip_jx_url5' => '2',
 
-
-
+   //百度地图ak
+   'Bmap_ak' => '6LgDkSdQF0IGhbhac4Lfjokl',
    //采集规则
    'collect_rule' => array(
       'type_id' => array(

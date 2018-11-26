@@ -19,6 +19,11 @@
  * @parameter string height 图片裁剪高度
  */
 function get_oss_img_crop( $imgpath = '' , $width = 0 , $height = 0 ){
+
+    //判断是否站外地址
+    if( strpos($imgpath, 'http://') === 0  || strpos($imgpath, 'https://')=== 0 ){
+        return $imgpath;
+    }
     $rootPath = config('QCLOUD_COS.oss_img_url');
     if( !$imgpath ){
         //返回默认图片
