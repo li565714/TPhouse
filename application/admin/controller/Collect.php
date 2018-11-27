@@ -13,7 +13,7 @@ class Collect extends Base
         
         parent::_initialize();
 
-        $this->model = model('CollectRule');
+        $this->model = model('admin/CollectRule');
         $this->allowField = true;
 
         $this->collect_rule = config('web.collect_rule');
@@ -125,7 +125,7 @@ class Collect extends Base
             $datas[$key]['soure'] = 'anjuke';
 
             //判断是否采集过
-            $isCollect = model('collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
+            $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
             if(  $isCollect ){
                  unset($datas[$key]);
                  continue;
@@ -137,11 +137,11 @@ class Collect extends Base
             unset($datas[$key]);
             $ndata[0]['id']="";
 
-            $houseModel = model('house');
+            $houseModel = model('admin/house');
             $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
 
             //增加采集日志
-            model('collect_log')->insert( array(
+            model('admin/collect_log')->insert( array(
                 'house_id' => $houseModel->id , 
                 'soure_id' => $ndata[0]['soure_id'],
                 'soure'    =>'anjuke'
@@ -198,7 +198,7 @@ class Collect extends Base
         $ak = config('web.Bmap_ak');
         foreach ($data as $key => $value) {
             //判断小区是否存在
-            $xiaoqu = model('xiaoqu')->where('name' , $value['xq_id'])->find();
+            $xiaoqu = model('admin/xiaoqu')->where('name' , $value['xq_id'])->find();
             if( $xiaoqu ){
                 $data[$key]['xq_id'] = $xiaoqu['id'];
             } else {
@@ -209,7 +209,7 @@ class Collect extends Base
                 //没有找到小区则退出当前循环
                 if( $bmapResult['status'] == 0 ){
                     //保存小区信息
-                    $xq_id = model('xiaoqu')->insertGetId( array(
+                    $xq_id = model('admin/xiaoqu')->insertGetId( array(
                         'name' => $value['xq_id'] , 
                         'lat' => $bmapResult['result']['location']['lat'],
                         'lon' => $bmapResult['result']['location']['lng']
@@ -261,6 +261,11 @@ class Collect extends Base
                     $data[$key]['pay_type'] = $k;
                     break;
                 }
+            }
+
+            //电梯
+            if( $value['countt_floor'] > 6){
+                $data[$key]['is_elevator'] = 1;
             }
 
             //房间配置
