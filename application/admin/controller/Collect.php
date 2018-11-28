@@ -118,10 +118,9 @@ class Collect extends Base
                     'pay_type'  => array('.prop-price' , 'text'  , '-span' , function( $subject , $key ){
                          return $subject;
                     }) ,
-                ),'','UTF-8'
-            );
+                ),'','UTF-8','UTF-8' , true);
            
-            
+        
             dump($infoData->data[0]);die;
             
             $datas[$key] = $infoData->data[0];
