@@ -120,6 +120,8 @@ class Collect extends Base
                     }) ,
                 )
             )->encoding('UTF-8','GB2312');
+           
+            
             dump($infoData->data[0]);die;
             
             $datas[$key] = $infoData->data[0];
