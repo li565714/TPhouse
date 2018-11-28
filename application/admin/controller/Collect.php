@@ -30,6 +30,8 @@ class Collect extends Base
        
     }
 
+
+
     /**
      * 采集
      * @author lgp
@@ -115,6 +117,8 @@ class Collect extends Base
                     'phone'  => array('#view-footer .view-footer-tel' , 'href'  , '' , function( $subject , $key ){
                          return substr($subject , 4 , 11);
                     }) ,
+                    'name'  => array('.footer-broker-name' , 'text' ) , //联系人
+                    'company'  => array('.footer-broker-company' , 'text' ) , //所属公司
                     'pay_type'  => array('.prop-price' , 'text'  , '-span' , function( $subject , $key ){
                          return $subject;
                     }) ,
