@@ -151,6 +151,8 @@ class Collect extends Base
                 unset($datas[$key]);
                 continue;
             }
+
+
               
 
             $newData[0] = $datas[$key];
@@ -160,6 +162,8 @@ class Collect extends Base
 
             
             $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
+
+            echo $datas[$key]['title'] . '---' . $value['houseid']  . ' --- ok <br/>';
 
             //增加采集日志
             model('admin/collect_log')->insert( array(
