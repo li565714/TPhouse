@@ -70,6 +70,10 @@ return [
          '12004' =>'半年付',
          '12005' =>'按天付'
       )
+   ),
+
+   'collect_soure' => array(
+      'anjuke' => 'https://pages.anjukestatic.com/usersite/touch/img/app/144x144.png'
    )
 
 ];

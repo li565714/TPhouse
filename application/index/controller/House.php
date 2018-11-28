@@ -111,6 +111,12 @@ class House extends Base
                 } 
                 $list[$key]['imgs_path'] = $imgs_path;
             }
+
+            //判断是否采集
+            if( $value['soure_id'] ){
+                $collect_soure = config('web.collect_soure')；
+                $list[$key]['portrait'] = $collect_soure[$value['soure']];
+            }
             
         }
 
