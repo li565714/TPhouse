@@ -64,6 +64,8 @@ class Collect extends Base
             )
         );
 
+        echo 'list:';
+        dump($listQuery->data);
 
 
         //信息页匹配
