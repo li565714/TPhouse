@@ -120,7 +120,7 @@ class Collect extends Base
                     }) ,
                 ),'','UTF-8','UTF-8' , true);
         
-            
+             
             $datas[$key] = $infoData->data[0];
             $datas[$key]['soure_id'] = $value['houseid'];
             $datas[$key]['soure'] = 'anjuke';
