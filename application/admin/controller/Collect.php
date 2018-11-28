@@ -61,7 +61,7 @@ class Collect extends Base
                 }) //连接标识
             )
         );
-        dump($listQuery->data);die;
+
 
 
         //信息页匹配
@@ -119,7 +119,8 @@ class Collect extends Base
                          return $subject;
                     }) ,
                 )
-            );
+            )->encoding('UTF-8','GB2312');
+            dump($infoData->data[0]);die;
             
             $datas[$key] = $infoData->data[0];
             $datas[$key]['soure_id'] = $value['houseid'];
