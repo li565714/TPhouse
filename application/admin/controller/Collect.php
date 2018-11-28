@@ -61,6 +61,7 @@ class Collect extends Base
                 }) //连接标识
             )
         );
+        dup($listQuery->data);die;
 
 
         //信息页匹配

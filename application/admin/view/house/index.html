@@ -38,7 +38,7 @@
 
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <button class="btn btn-primary btn-outline margin-bottom-10 btn-sm iw-refresh"  type="button"><i class="fa fa-refresh"></i></button>
+                                    <a href="{:url('index')}" class="btn btn-primary btn-outline margin-bottom-10 btn-sm iw-refresh"  type="button"><i class="fa fa-refresh"></i></a>
                                     {:build_toolbar('del' , array( 'dels()' ) , array( 'func') )}
                                     <div class="btn-group margin-bottom-10">
                                         <button type="button" class="btn btn-primary btn-outline dropdown-toggle btn-sm " id="exampleSizingDropdown3" data-toggle="dropdown" aria-expanded="false">
@@ -70,7 +70,7 @@
                                 <tr>
                                     <th width="50" >
                                         <span class="checkbox-custom checkbox-primary user-select-all"   >
-                                            <input type="checkbox" class="i-checks mailbox-checkbox selectable-all user-checkbox " onclick="_checkAll('.user-checkbox' , this);">
+                                            <input type="checkbox" onclick=" _checkAll('.user-checkbox' , this);return false; " class=" i-checks " >
                                             <label></label>
                                         </span>
                                     </th>
