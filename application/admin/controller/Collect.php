@@ -64,8 +64,8 @@ class Collect extends Base
             )
         );
 
-        echo 'list:';
-        dump($listQuery->data);
+        
+        
 
 
         //信息页匹配
@@ -77,6 +77,7 @@ class Collect extends Base
             //判断是否采集过
             $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
             if(  $isCollect ){
+                echo 'list:'  . $that_info_url .' -- 已采集过';
                  unset($datas[$key]);
                  continue;
             }
