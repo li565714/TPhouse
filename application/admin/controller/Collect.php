@@ -129,6 +129,12 @@ class Collect extends Base
             $datas[$key]['soure_id'] = $value['houseid'];
             $datas[$key]['soure'] = 'anjuke';
 
+            //判断是否采集成功
+            if( !$datas[$key]['title']  || $datas[$key]['xq_id']  || $datas[$key]['house_amount'] || $datas[$key]['name'] || $datas[$key]['phone']){
+                 unset($datas[$key]);
+                 continue;
+            }
+
             //判断是否采集过
             $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
             if(  $isCollect ){
