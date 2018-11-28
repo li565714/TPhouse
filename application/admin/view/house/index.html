@@ -150,6 +150,24 @@
 
    
 
+    function dels(  ){
+        var ids = _getCheckData( '.i-checks' );
+       layer.confirm('确认删除？', {
+            btn: ['是','否'] //按钮
+          }, function(){
+             _ajax("{:url('del')}" , {'ids': ids , 'status':1 } , 'post' , function(ret){
+                if( ret.code == 1){
+                  _toast(ret.msg, 'success' , function(){
+                    location.reload();
+                  }) 
+                } else {
+                  _toast(ret.msg, 'error');
+                } 
+            });
+          });
+       
+    }
+
 
    function del( id ){
        layer.confirm('确认删除？', {
