@@ -94,6 +94,7 @@ class House extends Base
                 ->where('is_delete' , 0)
                 ->where('status' , 1)
                 ->field( 'h.* ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
+                ->order('add_time desc')
                 ->paginate($page_size);
 
         $dictModel = model('house_dict');
