@@ -129,17 +129,27 @@ class Collect extends Base
             $datas[$key]['soure_id'] = $value['houseid'];
             $datas[$key]['soure'] = 'anjuke';
 
-            //判断是否采集成功
-            if( !$datas[$key]['title']  || $datas[$key]['xq_id']  || $datas[$key]['house_amount'] || $datas[$key]['name'] || $datas[$key]['phone']){
-                 unset($datas[$key]);
-                 continue;
-            }
+
 
             //判断是否采集过
             $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
             if(  $isCollect ){
                  unset($datas[$key]);
                  continue;
+            }
+
+            //判断是否采集成功
+            if( !$datas[$key]['title']  || $datas[$key]['xq_id']  || $datas[$key]['house_amount'] || $datas[$key]['name'] || $datas[$key]['phone']){
+                 unset($datas[$key]);
+                 continue;
+            }
+
+
+            $houseModel = model('admin/house');
+            $isHouse = $houseModel->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
+            if( $isHouse ){
+                unset($datas[$key]);
+                continue;
             }
               
 
@@ -148,7 +158,7 @@ class Collect extends Base
             unset($datas[$key]);
             $ndata[0]['id']="";
 
-            $houseModel = model('admin/house');
+            
             $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
 
             //增加采集日志
