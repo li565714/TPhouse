@@ -119,9 +119,7 @@ class Collect extends Base
                          return $subject;
                     }) ,
                 ),'','UTF-8','UTF-8' , true);
-           
-         
-            dump($infoData->data[0]);die;
+        
             
             $datas[$key] = $infoData->data[0];
             $datas[$key]['soure_id'] = $value['houseid'];
