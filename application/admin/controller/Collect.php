@@ -121,7 +121,7 @@ class Collect extends Base
                 ),'','UTF-8'
             );
            
-            
+        
             dump($infoData->data[0]);die;
             
             $datas[$key] = $infoData->data[0];
