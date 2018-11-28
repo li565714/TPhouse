@@ -82,6 +82,11 @@ class House extends Base
             $houseModel->where('direction' , $direction );
         }
 
+        //来源
+        $soure = input( 'soure' );
+        if( $soure ){
+            $houseModel->where('soure' , 0 );
+        }
         
 
 
