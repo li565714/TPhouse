@@ -73,6 +73,14 @@ class Collect extends Base
         $regex3 = "/(\d*)室(\d*)厅(\d*)卫/";
         foreach ($listQuery->data as $key => $value) {
             $that_info_url = str_replace( "[houseid]" , $value['houseid'] , $info_url);
+
+            //判断是否采集过
+            $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
+            if(  $isCollect ){
+                 unset($datas[$key]);
+                 continue;
+            }
+
             $infoData = QueryList::Query($that_info_url,
                 array(
                     "title"=> array('.prop-title' , 'text'),                        //标题
@@ -133,12 +141,7 @@ class Collect extends Base
 
 
 
-            //判断是否采集过
-            $isCollect = model('admin/collect_log')->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
-            if(  $isCollect ){
-                 unset($datas[$key]);
-                 continue;
-            }
+           
 
             //判断是否采集成功
             if( !$datas[$key]['title']  || $datas[$key]['xq_id']  || $datas[$key]['house_amount'] || $datas[$key]['name'] || $datas[$key]['phone']){
