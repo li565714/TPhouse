@@ -112,11 +112,6 @@ class House extends Base
                 $list[$key]['imgs_path'] = $imgs_path;
             }
 
-            //判断是否采集
-            if( $value['soure_id'] ){
-                $collect_soure = config('web.collect_soure');
-                $list[$key]['portrait'] = $collect_soure[$value['soure']];
-            }
             
         }
 
@@ -173,6 +168,13 @@ class House extends Base
             } else {
                 //未登录时 手机号脱敏
                 $data['phone'] = substr_replace($data['phone'],'****',3,4);
+            }
+
+
+            //判断是否采集
+            if( $data['soure_id'] ){
+                $collect_soure = config('web.collect_soure');
+                $data['portrait'] = $collect_soure[$data['soure']];
             }
 
 
