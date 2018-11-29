@@ -46,7 +46,7 @@ class Files extends Base{
         
         $file = request()->file('file');
         // 上传文件
-        $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+        $info = $file->validate(['size'=>1024*1024*2,'ext'=>'jpg,png,gif'])->move(ROOT_PATH . 'public' . DS . 'uploads');
         if ($info) {
             
             $data['pathname'] = str_replace("\\","/",$info->getPathname());
