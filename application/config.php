@@ -244,13 +244,13 @@ return [
 
      //腾讯对象存储
     'QCLOUD_COS' => array(
-        'appId'  => '1251064482',
-        'bucket' => 'house-app',
-        'region' => 'cd',  //地域
-        'SecretId' => 'AKIDCCxTlpCG1Zt2xcfFNIzSikX5OWP3waUG',
-        'SecretKey' => 'g7JGArJWUDhwvhEVXJqCKEuNbZJo56tQ',
+        'appId'  => '',
+        'bucket' => 'house',
+        'region' => '',  //地域
+        'SecretId' => '',
+        'SecretKey' => '',
         'unlink_file' => 1 , //是否删除本地文件  1是 2否
-        'oss_img_url' => 'http://house-app-1251064482.piccd.myqcloud.com',
-        'cos_file_url' => 'http://house-app-1251064482.coscd.myqcloud.com'
+        'oss_img_url' => '',
+        'cos_file_url' => ''
     ),
 ];
