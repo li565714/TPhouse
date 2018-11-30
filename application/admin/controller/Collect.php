@@ -68,6 +68,7 @@ class Collect extends Base
         
 
 
+
         //信息页匹配
         $regex2 ='/<img[\s\S]*?data-src-swipe\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
         $regex3 = "/(\d*)室(\d*)厅(\d*)卫/";
@@ -81,6 +82,7 @@ class Collect extends Base
                 unset($datas[$key]);
                 continue;
             }
+
 
             $infoData = QueryList::Query($that_info_url,
                 array(
@@ -135,21 +137,15 @@ class Collect extends Base
                     }) ,
                 ),'','UTF-8','UTF-8' , true);
         
-             
             $datas[$key] = $infoData->data[0];
             $datas[$key]['soure_id'] = $value['houseid'];
             $datas[$key]['soure'] = 'anjuke';
 
-
-
-           
-
             //判断是否采集成功
-            if( !$datas[$key]['title']  || $datas[$key]['xq_id']  || $datas[$key]['house_amount'] || $datas[$key]['name'] || $datas[$key]['phone']){
+            if( !$datas[$key]['title']  || !$datas[$key]['xq_id']  || !$datas[$key]['house_amount'] || !$datas[$key]['name'] || !$datas[$key]['phone']){
                  unset($datas[$key]);
                  continue;
             }
-
 
             $houseModel = model('admin/house');
             $isHouse = $houseModel->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
@@ -157,16 +153,11 @@ class Collect extends Base
                 unset($datas[$key]);
                 continue;
             }
-
-
-              
-
             $newData[0] = $datas[$key];
             $ndata =  $this->collectStrToId( $newData ) ;
             unset($datas[$key]);
             $ndata[0]['id']="";
 
-            
             $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
 
             echo $datas[$key]['title'] . '---' . $value['houseid']  . ' --- ok <br/>';
