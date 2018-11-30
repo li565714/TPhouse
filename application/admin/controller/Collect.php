@@ -44,7 +44,7 @@ class Collect extends Base
         
         
         //列表页地址
-        $list_url = 'https://bj.zu.anjuke.com/';
+        $list_url = 'https://bj.zu.anjuke.com/px3/';
         //信息页地址
         // $info_url = 'https://bj.zu.anjuke.com/fangyuan/[houseid]';
 
