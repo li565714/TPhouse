@@ -288,6 +288,8 @@ class Collect extends Base
             //电梯
             if( $value['countt_floor'] > 6){
                 $data[$key]['is_elevator'] = 1;
+            } else {
+                $data[$key]['is_elevator'] = 0;
             }
 
             //房间配置
