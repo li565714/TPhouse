@@ -107,7 +107,7 @@ Debug::remark('begin');
 Debug::remark('end');
 // ...也许这里还有其他代码
 // 进行统计区间
-if( input('debug' => 'ok')){
+if( input('debug' ) == 'ok')){
 	echo Debug::getRangeTime('begin','end').'s';	
 }
 
