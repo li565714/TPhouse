@@ -7,7 +7,7 @@ class House extends Base
     public function index(){
 
         
-        $houseModel = model('house')->where('status' , 1);
+        $houseModel = model('house');
 
         $page = input('page' , 1);
         $page_size = input('page_size' , 20);
@@ -90,8 +90,11 @@ class House extends Base
         }
         
 
+        $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->count();
 Debug::remark('begin');
-
+		
+       
+		$list = array();
         $list = $houseModel->alias('h')->join('xiaoqu xq','xq.id = h.xq_id' , 'LEFT')
                 ->join('house_dict t','t.code = h.type_id' , 'LEFT')
                 ->join('house_dict d','d.code = h.decorate_id' , 'LEFT')
@@ -100,11 +103,14 @@ Debug::remark('begin');
                 ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
                 ->where('is_delete' , 0)
                 ->where('status' , 1)
-                ->field( 'h.* ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
-                ->order('add_time desc')
-                ->paginate($page_size);
+                ->field( 'h.id,h.title,house_amount,room,hall,who,area_size,user_id,config_id,imgs ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
 
-                // ...其他代码段
+                ->order('add_time desc')
+                ->paginate($page_size , $count );
+
+
+
+                                         // ...其他代码段
 Debug::remark('end');
 // ...也许这里还有其他代码
 // 进行统计区间
@@ -112,10 +118,9 @@ if( input('debug' ) == 'ok' ){
 	echo Debug::getRangeTime('begin','end').'s';	
 }
 
-
         $dictModel = model('house_dict');
         foreach ($list as $key => $value) {
-            $list[$key]['phone'] = substr_replace($value['phone'],'****',3,4);
+            //$list[$key]['phone'] = substr_replace($value['phone'],'****',3,4);
             
             $imgs_path = [];
             $list[$key]['imgs_path'] = [];
