@@ -89,6 +89,7 @@ class House extends Base
         }
         
 
+Debug::remark('begin');
 
         $list = $houseModel->alias('h')->join('xiaoqu xq','xq.id = h.xq_id' , 'LEFT')
                 ->join('house_dict t','t.code = h.type_id' , 'LEFT')
@@ -101,6 +102,15 @@ class House extends Base
                 ->field( 'h.* ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
                 ->order('add_time desc')
                 ->paginate($page_size);
+
+                // ...其他代码段
+Debug::remark('end');
+// ...也许这里还有其他代码
+// 进行统计区间
+if( input('debug' => 'ok')){
+	echo Debug::getRangeTime('begin','end').'s';	
+}
+
 
         $dictModel = model('house_dict');
         foreach ($list as $key => $value) {
