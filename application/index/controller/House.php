@@ -103,7 +103,7 @@ Debug::remark('begin');
                 ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
                 ->where('is_delete' , 0)
                 ->where('status' , 1)
-                ->field( 'h.id,h.title,house_amount,room,hall,who,area_size,user_id,config_id,imgs ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
+                ->field( 'h.*,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
 
                 ->order('add_time desc')
                 ->paginate($page_size , $count );
