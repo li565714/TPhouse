@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 
+use \think\Debug;
 class House extends Base
 {
     public function index(){
