@@ -157,7 +157,7 @@ class House extends Base
         }
 
         $data = array( 'status' => 1000 , 'msg' => 'ok' ,'data' => $list );
-        return json_encode($data);
+        return json($data);
     }
 
 
