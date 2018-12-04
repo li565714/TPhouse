@@ -7,7 +7,7 @@ class House extends Base
     public function index(){
 
         
-        $houseModel = model('house');
+        $houseModel = model('house')->where(1);
 
         $page = input('page' , 1);
         $page_size = input('page_size' , 20);
@@ -48,8 +48,10 @@ class House extends Base
 
         //出租类型
         $type_id = input( 'type_id' );
+
         if( $type_id ){
             $houseModel->where('type_id' , $type_id );
+            
         }
 
         //装修类型
@@ -88,9 +90,7 @@ class House extends Base
         if( $soure ){
             $houseModel->where('soure' , 0 );
         }
-        
-        $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->count();     
-        $list = array();
+        // $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->fetchSql(true)->count();             
         $list = $houseModel->alias('h')->join('xiaoqu xq','xq.id = h.xq_id' , 'LEFT')
                 // ->join('house_dict t','t.code = h.type_id' , 'LEFT')
                 // ->join('house_dict d','d.code = h.decorate_id' , 'LEFT')
@@ -101,7 +101,7 @@ class House extends Base
                 ->where('status' , 1)
                 ->field( 'h.*,xq.name as xq_name')
                 ->order('add_time desc')
-                ->paginate($page_size , $count );
+                ->paginate($page_size );
 
 
         $dictModel = model('house_dict');
