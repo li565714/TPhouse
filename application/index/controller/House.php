@@ -38,11 +38,11 @@ class House extends Base
         //几室
         $room = input('room');
         if( $room ) {
-        	if( $room >= 5){
-        		$houseModel->where('room' , '>=' , $room );    
-        	} else {
-        		$houseModel->where('room' , $room );    
-        	}
+            if( $room >= 5){
+                $houseModel->where('room' , '>=' , $room );    
+            } else {
+                $houseModel->where('room' , $room );    
+            }
            
         }
 
@@ -89,39 +89,58 @@ class House extends Base
             $houseModel->where('soure' , 0 );
         }
         
-
-        $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->count();
-Debug::remark('begin');
-		
-       
-		$list = array();
+        $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->count();     
+        $list = array();
         $list = $houseModel->alias('h')->join('xiaoqu xq','xq.id = h.xq_id' , 'LEFT')
-                ->join('house_dict t','t.code = h.type_id' , 'LEFT')
-                ->join('house_dict d','d.code = h.decorate_id' , 'LEFT')
-                ->join('house_dict di','di.code = h.direction' , 'LEFT')
-                ->join('house_dict rt','rt.code = h.room_type' , 'LEFT')
-                ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
+                // ->join('house_dict t','t.code = h.type_id' , 'LEFT')
+                // ->join('house_dict d','d.code = h.decorate_id' , 'LEFT')
+                // ->join('house_dict di','di.code = h.direction' , 'LEFT')
+                // ->join('house_dict rt','rt.code = h.room_type' , 'LEFT')
+                // ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
                 ->where('is_delete' , 0)
                 ->where('status' , 1)
-                ->field( 'h.*,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
-
+                ->field( 'h.*,xq.name as xq_name')
                 ->order('add_time desc')
                 ->paginate($page_size , $count );
 
 
-
-                                         // ...其他代码段
-Debug::remark('end');
-// ...也许这里还有其他代码
-// 进行统计区间
-if( input('debug' ) == 'ok' ){
-	echo Debug::getRangeTime('begin','end').'s';	
-}
-
         $dictModel = model('house_dict');
+        $dictData = cache( 'cache_dict');
+        if( !$dictData){
+            $dictData = $dictModel->select();
+            cache('cache_dict' , $dictData );
+        }
+      
         foreach ($list as $key => $value) {
-            //$list[$key]['phone'] = substr_replace($value['phone'],'****',3,4);
+            $list[$key]['phone'] = substr_replace($value['phone'],'****',3,4);
             
+            //转换字典内容
+            foreach ($dictData as $k => $val) {
+                //type_id
+                if( $value['type_id'] == $val['code'] ){
+                    $list[$key]['type_name'] = $val['title'];
+                    continue;
+                }
+                if( $value['decorate_id'] == $val['code'] ){
+                    $list[$key]['decorate_name'] = $val['title'];
+                    continue;
+                }
+
+                if( $value['direction'] == $val['code'] ){
+                    $list[$key]['direction_name'] = $val['title'];
+                    continue;
+                }
+                if( $value['room_type'] == $val['code'] ){
+                    $list[$key]['room_type_name'] = $val['title'];
+                    continue;
+                }
+                if( $value['pay_type'] == $val['code'] ){
+                    $list[$key]['pay_type_name'] = $val['title'];
+                    continue;
+                }
+            }
+
+
             $imgs_path = [];
             $list[$key]['imgs_path'] = [];
             //获取图片信息
@@ -181,11 +200,11 @@ if( input('debug' ) == 'ok' ){
             $data['is_collect'] = 0;  //判断用户是否收藏
             $data['is_check']   = 0;  //验证用户是否登录
             if( $userInfo ){
-            	$data['is_check'] = 1;
+                $data['is_check'] = 1;
                 //验证是否收藏
                 $user_collect = model('user_collect')->where( 'uid' , $userInfo['uid'])->where( 'house_id' , $id)->count();
                 if( $user_collect ){
-                	$data['is_collect'] = 1;
+                    $data['is_collect'] = 1;
                 }
             } else {
                 //未登录时 手机号脱敏
@@ -262,7 +281,7 @@ if( input('debug' ) == 'ok' ){
     }
 
     public function collect(){
-		//验证用户令牌
+        //验证用户令牌
         $userInfo = $this->checkToken( input('token') );
         if( !$userInfo ){
             return json( $this->resultInfo );
@@ -280,15 +299,15 @@ if( input('debug' ) == 'ok' ){
 
         $data = model('user_collect')->where( 'uid' , $userInfo['uid'])->where( 'house_id' , $params['house_id'])->find();
         if( !$data ){
-        	$addData = array(
-        		'uid' => $userInfo['uid'] , 
-        		'house_id' => $params['house_id'] , 
-        		'add_time' => time() , 
-        	);
-        	model('user_collect')->insert( $addData );
+            $addData = array(
+                'uid' => $userInfo['uid'] , 
+                'house_id' => $params['house_id'] , 
+                'add_time' => time() , 
+            );
+            model('user_collect')->insert( $addData );
         } else{
-        	model('user_collect')->where('id' , $data['id'])->delete( $addData );
-        	$this->resultInfo = lang('error_1100');
+            model('user_collect')->where('id' , $data['id'])->delete( $addData );
+            $this->resultInfo = lang('error_1100');
         }
 
          return json( $this->resultInfo );
