@@ -138,7 +138,7 @@ if( input('debug' ) == 'ok' ){
         }
 
         $data = array( 'status' => 1000 , 'msg' => 'ok' ,'data' => $list );
-        return json( $data );
+        return json_encode($data);
     }
 
 
