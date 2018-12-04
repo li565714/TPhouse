@@ -15,9 +15,9 @@ return [
     // +----------------------------------------------------------------------
 
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => fasle,
     // 应用Trace
-    'app_trace'              => true,
+    'app_trace'              => fasle,
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -244,13 +244,13 @@ return [
 
      //腾讯对象存储
     'QCLOUD_COS' => array(
-        'appId'  => '',
-        'bucket' => 'house',
-        'region' => '',  //地域
-        'SecretId' => '',
-        'SecretKey' => '',
+        'appId'  => '1251064482',
+        'bucket' => 'house-app-bj',
+        'region' => 'bj',  //地域
+        'SecretId' => 'AKIDCCxTlpCG1Zt2xcfFNIzSikX5OWP3waUG',
+        'SecretKey' => 'g7JGArJWUDhwvhEVXJqCKEuNbZJo56tQ',
         'unlink_file' => 1 , //是否删除本地文件  1是 2否
-        'oss_img_url' => '',
-        'cos_file_url' => ''
+        'oss_img_url' => 'http://house-app-bj-1251064482.picbj.myqcloud.com',
+        'cos_file_url' => 'http://house-app-bj-1251064482.cosbj.myqcloud.com'
     ),
 ];
