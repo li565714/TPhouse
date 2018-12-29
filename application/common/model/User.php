@@ -20,14 +20,14 @@ class User extends Model {
      */
     public function login($username = '' , $password = ''){
         if(!$username  || !$password ){
-            $this->errMsg = '账户密码不能为空';
+            $this->errMsg = lang('error_1011') ;
             return false;
         }
         //获取用户信息
-        $user = $this->where( array('username' => $username ) )->field( 'id , username ,salt, password,is_sys ')->find();
+        $user = $this->where( array('username|phone' => $username ) )->field( 'id , username ,salt, password,is_sys ')->find();
 
-        if( !$user  || $user['is_sys'] != 1){
-            $this->errMsg = '账户不存在或被禁用';
+        if( !$user ){
+            $this->errMsg = lang('error_1012');
             return false;
         }
         //判断密码是否正确
@@ -35,7 +35,7 @@ class User extends Model {
             $this->autoLogin( $user );
             return true;
         } else {
-            $this->errMsg = '密码错误';
+            $this->errMsg = lang('error_1013');
             return false;
         }
 

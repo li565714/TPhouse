@@ -14,6 +14,8 @@ class Operation extends Base{
     public function _initialize(){
         parent::_initialize();
         $this->allowField = true;
+
+        $this->model = model("advert");
     }
 
     /**
@@ -40,6 +42,53 @@ class Operation extends Base{
         $this->assign('page', $page);
      
         return $this->fetch();
+    }
+
+    /**
+     * 添加广告位栏目
+     * @author lgp
+     * @datetime 2018/04/12 17:33
+     */
+    public function add_column(){
+
+        if ($this->request->isPost())
+        {
+
+            $this->model = model("advert");
+            $params = $this->request->post("");
+            $result = $this->model->save($params);
+            if ($result !== false){
+                $this->success('添加成功' , url('advlist'));
+            } else {
+                $this->error($this->model->getError());
+            }
+
+        }
+
+        return $this->fetch( );   
+    }
+
+    /**
+     * 编辑广告位内容
+     * @author lgp
+     * @datetime 2018/04/12 17:33
+     */
+    public function  edit_column(){
+        $this->model = model("advert");
+        $params = input('request.');
+        $row = $this->model->get(input('id'));
+        if ($this->request->isPost())
+        {
+            $params = $this->request->post("");
+            $result = $row->allowField(true)->save($params);
+            if ($result !== false){
+                $this->success('编辑成功' , url('advlist'));
+            } else {
+                $this->error($this->model->getError());
+            }
+        }
+        $this->assign("row", $row);
+        return $this->fetch(  );   
     }
 
     /**

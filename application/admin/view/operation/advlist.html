@@ -3,8 +3,10 @@
 
 <head>
 {include file="base" /} 
-
-	<script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
+<script type="text/javascript">        
+    var BASE_URL = '__SYSTEM__/js/plugins/webuploader/';     
+    var server_url = "{:url('Public/upload')}";    </script>
+<script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
 </head>
 
 <body class="">
@@ -19,7 +21,7 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                    	<form class="form-group form-inline iw-serach" action="{:url('index')}" method="get" >
+                    	<form class="form-group form-inline iw-serach" action="{:url('add')}" method="get" >
                                 <input type="hidden" name="search" value="1">
                                 <div class="form-group">
                                     <label class="control-label" for="keyword">关键词</label>
@@ -61,7 +63,14 @@
 											<tr class="radiotr">
 											    <td><input type="checkbox"  class="i-checks" value="{$vo.id}" name="ids[]"></td>
 												<td>{$vo.id}</td>
-												<td><a {if condition="$vo['pid'] eq 0"} href="{:url('advlist',array('pid'=>$vo['id']))}" {/if} >{$vo.advert_name}</a></td>
+												<td>
+														<a {if condition="$vo['pid'] eq 0"} href="{:url('advlist',array('pid'=>$vo['id']))}" {/if} >
+														{$vo.advert_name}
+														{if condition="$vo['pid'] eq 0 "}
+														({$vo.expbody})
+														{/if}
+														</a>
+												</td>
 												<td>{if condition="$vo['timeset'] eq 1"}{$vo.start_time|date="Y-m-d H:i:s",###} - {$vo.end_time|date="Y-m-d H:i:s",###}{else/}永不过期{/if} </td>
 												<td>{$vo.sort|default=0}</td>
 
@@ -72,7 +81,7 @@
 														<a   href="{:url('edit_column',array('id'=>$vo['id']))}">编辑</a>
 													{else/}
 														<a   href="{:url('editAdvert',array('id'=>$vo['id']))}">编辑</a>
-														<a   href="{:url('delAdvert',array('id'=>$vo['id']))}">删除</a>
+														<a   href="{:url('delAdvert',array('ids'=>$vo['id']))}">删除</a>
 													{/if}
 													
 													

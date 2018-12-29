@@ -72,4 +72,37 @@ class User extends Base{
     }
 
 
+    
+    //编辑用户
+    public function edit(){
+        $this->model = model("user");
+        $params = input('request.');
+        $row = $this->model->get(input('ids'));
+        if ($this->request->isPost())
+        {
+            $params = $this->request->post("");
+
+            if( isset($params['password'])){
+                if( $params['password'] != $params['rpassword'] ){
+                    $this->error( '确认密码不相同');
+                }
+
+                $salt = getSalt(5);
+                $password = think_salt_md5($params['password'] , $salt);
+                $params['password'] = $password;
+                $params['salt'] = $salt;
+                
+            }
+            $result = $row->allowField(true)->save($params);
+            if ($result !== false){
+                $this->success('编辑成功' , url('index'));
+            } else {
+                $this->error($this->model->getError());
+            }
+        }
+        $this->assign("row", $row);
+        return $this->fetch( );   
+    }
+
+
 }

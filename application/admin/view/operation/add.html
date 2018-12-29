@@ -2,7 +2,10 @@
 <html>
 
 <head>
-<include file="Public/header" /> <script type="text/javascript">        var BASE_URL = '__SYSTEM__/js/plugins/webuploader/';		var server_url = "{:U('Public/upload')}";    </script>
+{include file="base" /} 
+<script type="text/javascript">        
+    var BASE_URL = '__SYSTEM__/js/plugins/webuploader/';     
+    var server_url = "{:url('Public/upload')}";    </script>
 <script type="text/javascript" src="__SYSTEM__/js/contabs.min.js"></script>
 
 </head>
@@ -18,7 +21,7 @@
                         <h5>添加广告位</h5>
                     </div>
                     <div class="ibox-content">
-							<form role="form" method="post" action="{:U('add')}" class="form-horizontal m-t">
+							<form role="form" method="post" action="{:url('add')}" class="form-horizontal m-t">
                            
 							   
 								<div class="form-group draggable ui-draggable">
@@ -112,7 +115,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group draggable ui-draggable">
                                 <div class="col-sm-10 col-sm-offset-1">
-									<input type="hidden" name="pid" value="{:I('pid',0)}">
+									<input type="hidden" name="pid" value="{:input('pid',0)}">
                                     <button class="btn btn-primary" type="submit">保存内容</button>
                                     <button class="btn btn-white" type="submit">取消</button>
                                 </div>
@@ -129,34 +132,27 @@
 	   <!-- layerDate plugin javascript -->
     <script src="__SYSTEM__/js/plugins/layer/laydate/laydate.js"></script>
     <script>
-        //外部js调用
-        function uploadImg(){			layer.open({			  type: 2,			  title: false,			  closeBtn: 1, 			  shade: [0],			  area: ['640px', '390px'],			  anim: 2,			  content: ["{:U('Public/webuploader',array('limit'=>1))}"], 			  end: function(ret){ 							  }			})		}				function uploadCallback(info){			$("#upload_img_paths").val(info);			$("#icon").attr('src',info);			$(".icon_img").show();		}
-        //日期范围限制
-        var start = {
-            elem: '#start',
-            format: 'YYYY/MM/DD hh:mm:ss',
-            min: laydate.now(), //设定最小日期为当前日期
-            max: '2099-06-16 23:59:59', //最大日期
-            istime: true,
-            istoday: false,
-            choose: function (datas) {
-                end.min = datas; //开始日选好后，重置结束日的最小日期
-                end.start = datas //将结束日的初始值设定为开始日
-            }
-        };
-        var end = {
-            elem: '#end',
-            format: 'YYYY/MM/DD hh:mm:ss',
-            min: laydate.now(),
-            max: '2099-06-16 23:59:59',
-            istime: true,
-            istoday: false,
-            choose: function (datas) {
-                start.max = datas; //结束日选好后，重置开始日的最大日期
-            }
-        };
-        laydate(start);
-        laydate(end);
+       
+       function uploadImg(el) {
+        upload_dom = "#"+el;
+        icon_dom = "."+el;
+        layer.open({
+            type: 2,
+            title: false,
+            closeBtn: 1,
+            //不显示关闭按钮
+            shade: [0],
+            area: ['640px', '390px'],
+            anim: 2,
+            content: ["{:url('files/webuploader',array('limit'=>5))}"],
+
+        });
+    }
+     function uploadCallback(info) {
+        $("#upload_img_paths").val(info.file);
+        $("#icon").attr('src', info.path);
+        $(".icon_img").show();
+     }
     </script>
 	
     <script>
