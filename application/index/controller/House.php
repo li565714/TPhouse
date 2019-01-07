@@ -180,7 +180,8 @@ class House extends Base
                 ->join('house_dict di','di.code = h.direction' , 'LEFT')
                 ->join('house_dict rt','rt.code = h.room_type' , 'LEFT')
                 ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
-                ->field( 'h.* ,user.nickname , user.portrait ,xq.name as xq_name , xq.lat,xq.lon,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
+                ->field( 'h.* ,user.nickname , user.portrait ,xq.name as xq_name , xq.lat,xq.lon,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name' , 'house_desc.description')
+                ->join('house_desc','house_desc.house_id = h.id' , 'LEFT')
                 ->where('h.status' , 1)
                 ->where('is_delete' , 0)
                 ->where('h.id' , $id)->find();

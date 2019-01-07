@@ -175,7 +175,7 @@ class User extends Base
                 ->join('house_dict rt','rt.code = h.room_type' , 'LEFT')
                 ->join('house_dict py','py.code = h.pay_type' , 'LEFT')
                 ->where('is_delete' , 0)
-                ->where('status' , 1)
+                ->where('h.status' , 1)
                 ->where('uid' , $userInfo['uid'])
                 ->field( 'h.* ,xq.name as xq_name ,t.title as type_name , d.title as decorate_name , di.title as direction_name  , rt.title as room_type_name , py.title as pay_type_name')
                 ->order( 'user_collect.add_time desc')

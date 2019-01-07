@@ -168,6 +168,13 @@ class Collect extends Base
                 'soure_id' => $ndata[0]['soure_id'],
                 'soure'    =>'anjuke'
             ));
+
+            //增加采集日志
+            model('admin/house_desc')->insert( array(
+                'house_id' => $houseModel->id , 
+                'description' => $ndata[0]['description']
+            ));
+
         }
 
        
