@@ -100,7 +100,7 @@ class User extends Base
         if ($result !== false){
         	 //增加描述
             model('admin/house_desc')->insert( array(
-                'house_id' => $result->id , 
+                'house_id' => $this->model->id , 
                 'description' => $params['description']
             ));
 
