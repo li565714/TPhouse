@@ -54,12 +54,26 @@ class House extends Base
         }
 
         //出租类型
+        $house_type = input( 'house_type' , 16003 );
+        if( $house_type ){
+            $houseModel->where('house_type' , $house_type );
+        }
+
+        //建筑类型  别墅 住宅
+        $build_type = input( 'build_type' );
+        if( $build_type ){
+            $houseModel->where('build_type' , $build_type );
+        }
+
+
+        //出租类型
         $type_id = input( 'type_id' );
 
         if( $type_id ){
             $houseModel->where('type_id' , $type_id );
-            
         }
+
+        
 
         //装修类型
         $decorate_id = input( 'decorate_id' );
