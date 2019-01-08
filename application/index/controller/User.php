@@ -98,6 +98,12 @@ class User extends Base
         $this->model = model('house');
         $result = $this->model->allowField(true)->save( $params );
         if ($result !== false){
+        	 //增加描述
+            model('admin/house_desc')->insert( array(
+                'house_id' => $result->id , 
+                'description' => $params['description']
+            ));
+
             $this->resultInfo = lang('error_1000');
         } else {
             $this->resultInfo = lang('error_1004');
