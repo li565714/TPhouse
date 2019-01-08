@@ -109,7 +109,7 @@ class House extends Base
         //来源
         $soure = input( 'soure' );
         if( $soure ){
-            $houseModel->where('soure' , 0 );
+            $houseModel->where('soure' , $soure );
         }
         // $count = $houseModel->where('is_delete' , 0)->where('status' , 1)->fetchSql(true)->count();             
         $list = $houseModel->alias('h')->join('xiaoqu xq','xq.id = h.xq_id' , 'LEFT')

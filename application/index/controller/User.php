@@ -95,6 +95,7 @@ class User extends Base
         }
 
         $params['user_id'] = $userInfo['uid'];
+        $params['soure']   = 'local';  //来源本站
         $this->model = model('house');
         $result = $this->model->allowField(true)->save( $params );
         if ($result !== false){
