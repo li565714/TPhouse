@@ -74,9 +74,11 @@ class User extends Base
             return json( $this->resultInfo );
         }
 
+        $method = input('method' , 'create');
+
         $params = $this->request->instance()->param();
 
-        $result = $this->validate($params,'House.create');
+        $result = $this->validate($params,'House.' .$method.);
         if(true !== $result){
             // 验证失败 输出错误信息
             $this->resultInfo = lang('param_error_1001');
