@@ -18,5 +18,7 @@ class Collect  extends Command
     {
         // // 行为逻辑
         action('admin/Collect/collect');
+
+        action('admin/Collect/collect2');
     }
 }

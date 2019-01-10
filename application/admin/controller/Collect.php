@@ -49,7 +49,7 @@ class Collect extends Base
         // $info_url = 'https://bj.zu.anjuke.com/fangyuan/[houseid]';
 
         $info_url = 'https://m.anjuke.com/bj/rent/[houseid]-3';
-         $regex1 = "/https:\/\/bj.zu.anjuke.com\/fangyuan\/(\d*)/";
+        $regex1 = "/https:\/\/bj.zu.anjuke.com\/fangyuan\/(\d*)/";
         $listQuery = QueryList::Query($list_url,
             array(
                 "title"=> array('#list-content h3' , 'text'),                        //标题
@@ -64,11 +64,7 @@ class Collect extends Base
             )
         );
 
-        
-        
-
-
-
+    
         //信息页匹配
         $regex2 ='/<img[\s\S]*?data-src-swipe\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
         $regex3 = "/(\d*)室(\d*)厅(\d*)卫/";
@@ -220,11 +216,165 @@ class Collect extends Base
         
     }
 
+
+    /**
+     * 采集
+     * @author lgp
+     * @datetime 2018/11/23 14:34
+     * @version 1.0
+     */
+    public function collect2( $rule = '' ){
+        set_time_limit(0);
+        $queryList = new QueryList();
+        
+        //列表页地址
+        $list_url = 'https://esf.fang.com/house/y71-h316/';
+
+        $content = $this->curlQuery($list_url , array() ,  0 , array(), true);
+        $content = iconv("gbk","utf-8//IGNORE",$content);
+        
+        // dump($content);
+        $ss = preg_match( '/<!--店铺列表-->([\s\S]*)<!--页码-->/iU' , $content , $data);
+        //信息页地址
+        $info_url = 'https://esf.fang.com/chushou/3_[houseid].htm';
+        $regex1 = "/https:\/\/beijing.anjuke.com\/prop\/view\/(A+\d*)/";
+        $listQuery = QueryList::Query($data[0],
+            array(
+                "title"=> array('.shop_list dl span.tit_shop','html' ),
+                "houseid"=> array('.shop_list dl' , 'data-bg' , "" , function( $subject , $key ) use ( $regex1 ){
+                    $data = json_decode( $subject ,true);
+                    return $data['houseid'];
+                }) //连接标识
+            ),""
+        );
+
+  
+        //信息页匹配
+        $regex2 ='/<img[\s\S]*?data-src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
+        $regex3 = "/(\d*)室(\d*)厅(\d*)卫/";
+        foreach ($listQuery->data as $key => $value) {
+            $that_info_url =  str_replace( "[houseid]" , $value['houseid'] , $info_url);
+
+            //判断是否采集过
+            $isCollect = model('admin/collect_log')->where('soure' , 'fang')->where('soure_id' , $value['houseid'])->count();
+            if(  $isCollect ){
+                echo 'list: fang ---'  . $that_info_url .' -- 已采集过' . '<br/>';
+                unset($datas[$key]);
+                continue;
+            }
+            //$that_info_url='https://esf.fang.com/chushou/3_424627434.htm?channel=2,2&psid=1_2_70';
+            $info_content = $this->curlQuery($that_info_url , array() ,  0 , array(), true);
+            preg_match( '/<!--搜索头文件结束-->([\s\S]*)<!-- wid1200 end -->/iU' , $info_content , $info_content2);
+            
+            echo $that_info_url;
+            $infoData = QueryList::Query($info_content2[0],
+                array(
+                    "title"=> array('h1.title' , 'text'),                        //标题
+                    'xq_id'=> array('.rcont a:eq(0)' , 'text' ) ,          //小区
+                    'house_amount'=> array('.price_esf i' , 'text') , //房屋价格
+                    'house_price'=> array('.tr-line:not(.box_btn):eq(1) .w132 .tt' , 'text'  ,'' , function( $subject , $key ){
+                        return $subject*1; //去掉文字
+                    }) , //房屋单价
+                    'area_size' => array('.tr-line:not(.box_btn):eq(1) .w182 .tt' , 'text' ,'-label' , function( $subject , $key ){
+                        return $subject*1; //去掉文字
+                    }) ,   //房屋面积
+                    'decorate_id' => array('.tr-line:not(.box_btn):eq(2) .w132 .tt' , 'text') ,  //装修类型
+                    'countt_floor' => array('.tr-line:not(.box_btn):eq(2) .w182 .font14' , 'text'  , '' , function( $subject , $key ){
+                        return substr($subject , 11 ,2);
+                    }) ,  //总楼层
+                    'direction' => array('.tr-line:not(.box_btn):eq(2) .w146 .tt' , 'text' ) ,  //方向
+                    'description' => array('.mscont' , 'html') ,  //描述
+                    'imgs' => array('#sfbdetaildesimgs' , 'html' ,"" , function( $subject , $key ) use ( $regex2 ){
+                        preg_match_all ( $regex2 , $subject , $matches );
+                        return implode(",",$matches[1] );
+                    }),   //图片
+                    'room'  => array('.tr-line:not(.box_btn):eq(1) .w146 .tt' , 'text'  , '' , function( $subject , $key ) use ( $regex3 ){
+                        preg_match ( $regex3 , $subject , $matches );
+                        return $matches[1];
+                    }) ,
+                    'hall'  => array('.tr-line:not(.box_btn):eq(1) .w146 .tt' , 'text'  , '' , function( $subject , $key )use ( $regex3 ){
+                        preg_match ( $regex3 , $subject , $matches );
+                        return $matches[2];
+                    }) ,
+                    'who'  => array('.tr-line:not(.box_btn):eq(1) .w146 .tt' , 'text'  , '' , function( $subject , $key )use ( $regex3 ){
+                        preg_match ( $regex3 , $subject , $matches );
+                        return $matches[3];
+                    }) ,
+
+                    'phone'  => array('#mobilecode' , 'text' ) ,
+                    'name'  => array('.zf_jjname a ' , 'text' ) , //联系人
+                    'company'  => array('.tjcont_list_cline4 .gray6' , 'title' ) , //所属公司
+
+                    'attrs'  => array('.content-item:eq(0) .cont ' , 'html' , '' , function( $subject , $key ) use ( $regex4 ){
+                        preg_match_all( '/<span[\s\S]*?>(.*?)<\/span>/' , $subject , $matches );
+                        return $matches[1];
+                    }) ,
+                    'years'  => array('.content-item:eq(0) .cont .text-item:eq(0) .rcont' , 'text' ,'' , function( $subject , $key ){
+                        return $subject*1; //去掉文字
+                    }) ,
+
+
+                ),'','UTF-8','UTF-8' , true);
+
+            
+        
+            $datas[$key] = $infoData->data[0];
+            $datas[$key]['soure_id'] = $value['houseid'];
+            $datas[$key]['soure'] = 'fang';
+            $datas[$key]['house_type'] = '16002';  //二手房
+
+
+            //判断是否采集成功
+            if( !$datas[$key]['title']  || !$datas[$key]['xq_id']  || !$datas[$key]['house_amount'] || !$datas[$key]['name'] || !$datas[$key]['phone']){
+                 unset($datas[$key]);
+                 continue;
+            }
+
+            $houseModel = model('admin/house');
+            $isHouse = $houseModel->where('soure' , 'anjuke')->where('soure_id' , $value['houseid'])->count();
+            if( $isHouse ){
+                unset($datas[$key]);
+                continue;
+            }
+            $newData[0] = $datas[$key];
+            $ndata =  $this->collectStrToId( $newData ) ;
+            unset($datas[$key]);
+            $ndata[0]['id'] = "";
+            
+            $houseModel->isUpdate(false)->allowField(true)->save( $ndata[0] );
+            echo $datas[$key]['title'] . '---' . $value['houseid']  . ' --- ok <br/>';
+
+            //增加采集日志
+            model('admin/collect_log')->insert( array(
+                'house_id' => $houseModel->id , 
+                'soure_id' => $ndata[0]['soure_id'],
+                'soure'    =>'fang'
+            ));
+
+            //增加采集日志
+            model('admin/house_desc')->insert( array(
+                'house_id' => $houseModel->id , 
+                'description' => $ndata[0]['description']
+            ));
+
+            //dump($infoData->data);die;
+
+        }
+
+       
+        echo 'ok';
+
+       
+        
+        
+    }
+
     /**
      * 采集内容转换
      */
     private function collectStrToId( $data = array() ){
         $ak = config('web.Bmap_ak');
+
         foreach ($data as $key => $value) {
             //判断小区是否存在
             $xiaoqu = model('admin/xiaoqu')->where('name' , $value['xq_id'])->find();
@@ -317,12 +467,59 @@ class Collect extends Base
             
             $data[$key]['config_id'] = implode(',', $config_ids) ;
 
+
+            //判断图片是否完整
+            $imgs = $value['imgs'];
+            $imgs = explode(',', $imgs);
+            foreach ($imgs as $imgkey => $imgvalue) {
+                $imgs[$imgkey] = $this->fix_url( $imgvalue);
+            }
+            $data[$key]['imgs'] = implode(',', $imgs) ;
+
+
+            $build_types = $this->collect_rule['build_type'];
+
+            $atts = $value['attrs'] ? $value['attrs'] : array();
+
+
+            foreach ($atts as $attr_key => $attr_value) {
+                if( $attr_value  == '建筑年代'){
+                    $data[$key]['years'] = $atts[$attr_key + 1] * 1;
+                }
+
+                if( $attr_value  == '有无电梯'){
+                    $data[$key]['is_elevator'] = trim($atts[$attr_key + 1]) == '有' ? 1 : 0;
+                }
+
+                if( $attr_value  == '住宅类别'){
+                    foreach ($build_types as $k => $val) {
+                        if( strpos( $val , $atts[$attr_key + 1]  ) !==false){
+                            $data[$key]['build_type'] = $k;
+                            break;
+                        }
+                    }
+                   
+                }
+            }
+
         }
         return $data;
     }
 
+    private function fix_url($url, $def=false, $prefix=false) {
+        $preg = "/^http(s)?:\\/\\/.+/";
+        if(preg_match($preg,$url))
+        {
+            return $url;
+        }else
+        {
+            return 'http://' . $url;
+        }
+    }
 
-    private function curlQuery( $url , $postdata = array() , $isPost = 1  , $header = array () ){
+
+
+    private function curlQuery( $url , $postdata = array() , $isPost = 1  , $header = array ()  , $gzip = false ){
 
         //$header[]= 'X-APICloud-AppKey:'.$appKey;
 
@@ -341,6 +538,10 @@ class Collect extends Base
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);//这个是重点。
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 检查证书中是否设置域名  
+
+        if($gzip) curl_setopt($ch, CURLOPT_ENCODING, "gzip"); // 关键在这里
+
+
         $data=curl_exec($ch);
         curl_close($ch);
     

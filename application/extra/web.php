@@ -69,11 +69,20 @@ return [
          '12003' =>'当月付',
          '12004' =>'半年付',
          '12005' =>'按天付'
+      ),
+      'build_type' => array(
+         '17001' =>'普通住宅',
+         '17002' =>'公寓',
+         '17003' =>'别墅',
+         '17004' =>'平方',
+         '17005' =>'四合院',
+         '17006' =>'其他'
       )
    ),
 
    'collect_soure' => array(
-      'anjuke' => 'https://pages.anjukestatic.com/usersite/touch/img/app/144x144.png'
+      'anjuke' => 'https://pages.anjukestatic.com/usersite/touch/img/app/144x144.png',
+      'fang' => 'https://static.soufunimg.com/common_m/m_public/201511/images/app_fang2.png',
    )
 
 ];

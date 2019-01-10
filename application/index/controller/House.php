@@ -219,6 +219,7 @@ class House extends Base
                 }
                 
             }
+            $data['description'] = htmlspecialchars_decode($data['description']);
             $data['imgs'] = $imgPath; 
             $data['is_collect'] = 0;  //判断用户是否收藏
             $data['is_check']   = 0;  //验证用户是否登录
