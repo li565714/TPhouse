@@ -198,5 +198,5 @@ function getDistance($lat1, $lng1, $lat2, $lng2){
 
 
 function get_house_description( $id = 0){
-	return model('house_desc')->where('house_id',$id)->column( 'description' );
+	return model('house_desc')->where('house_id',$id)->value( 'description' );
 }
